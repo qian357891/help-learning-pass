@@ -1,0 +1,17 @@
+.html-wrap {
+  position: relative;
+  left: 50%;
+
+  transform: translate(-50%);
+  max-width: 438px;
+  height: 100vh;
+}
+
+.outtest-box {
+  margin: 0 18px;
+}
+
+.flex-direction-col {
+  display: flex;
+  flex-direction: column;
+}
