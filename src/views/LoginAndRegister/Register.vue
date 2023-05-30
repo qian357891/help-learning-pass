@@ -12,7 +12,13 @@
 
     <van-form @submit="">
       <van-cell-group inset>
-        <van-field name="手机号" placeholder="手机号" :rules="[{ required: true }]" class="inp" />
+        <van-field
+          name="手机号"
+          placeholder="请输入手机号"
+          v-model="phoneNumber"
+          :rules="[{ required: true, pattern: reg_tel, message: '请填写正确的手机号' }]"
+          class="inp"
+        />
       </van-cell-group>
     </van-form>
 
@@ -30,6 +36,7 @@ import { axiosGet, axiosPost } from '@/axios/api'
 import { axiosConfig } from '@/axios/axios.config'
 import { useStore } from '@/stores'
 import Back from '@/components/Back.vue'
+import { reg_tel } from '@/util/reg'
 
 const phoneNumber = ref('')
 const sms = ref('')

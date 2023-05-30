@@ -1,0 +1,153 @@
+<template>
+  <div class="outtest-box flex-direction-col">
+    <Back />
+
+    <div class="page-title">
+      <span>亲，欢迎登录</span>
+    </div>
+
+    <div class="prompt">
+      <span>没有帮帮账号？ </span>
+      <RouterLink :to="{ name: 'register' }">立即注册</RouterLink>
+    </div>
+
+    <van-form @submit="">
+      <van-cell-group inset>
+        <van-field
+          name="手机号"
+          v-model="phoneNumber"
+          placeholder="请输入手机号"
+          :rules="[{ required: true, pattern: reg_tel, message: '请填写正确的手机号' }]"
+        />
+        <van-field
+          name="密码"
+          v-model="password"
+          placeholder="请输入密码"
+          type="password"
+          :rules="[{ required: true, message: '请填写密码' }]"
+        />
+      </van-cell-group>
+    </van-form>
+
+    <div class="change-txt-box">
+      <div class="change-login-way">
+        <RouterLink :to="{ name: 'login' }">短信验证码登录</RouterLink>
+      </div>
+      <div class="change-login-way">
+        <span>忘记密码</span>
+      </div>
+    </div>
+
+    <van-button color="rgb(64, 169, 255)" round @click="login">登录</van-button>
+    <Footer />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { axiosGet, axiosPost } from '@/axios/api'
+import { axiosConfig } from '@/axios/axios.config'
+import { useStore } from '@/stores'
+import Back from '../../components/Back.vue'
+import Footer from '@/components/Footer.vue'
+import router from '@/router'
+import { getHexPass, getDataHex } from '@/crypto'
+import type { WordArray } from '@/crypto'
+import { reg_tel } from '@/util/reg'
+
+const store = useStore()
+const phoneNumber = ref('')
+const password = ref('')
+
+// 获取加密秘钥
+let keyHex: WordArray
+const getkeyHex = async () => {
+  const data = await axiosGet(axiosConfig.rootUrl + axiosConfig.getKey)
+  keyHex = data.data.key
+  console.log(keyHex)
+}
+
+const login = async () => {
+  store.phone = phoneNumber.value
+
+  //使用加密后的密码进行登录
+  await getkeyHex()
+  const hexpass = getHexPass(getDataHex(password.value), keyHex)
+  const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.loginByPassword, {
+    phone: store.phone,
+    password: hexpass.toString()
+  })
+
+  store.token = await data.data.token
+  if (store.token) {
+    router.push({ name: 'home' })
+  }
+  console.log(data)
+}
+
+const logout = async () => {
+  const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.logout, {
+    phone: phoneNumber.value
+  })
+  console.log(data)
+}
+</script>
+
+<style scoped lang="scss">
+// 标题
+.page-title {
+  margin-top: 57px;
+  font-family: Noto Sans SC;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 53px;
+  letter-spacing: 0px;
+}
+// 提示
+.prompt {
+  margin-top: 8px;
+
+  * {
+    font-family: Noto Sans SC;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    letter-spacing: 0px;
+  }
+  :nth-child(2) {
+    background: linear-gradient(145deg, rgba(0, 210, 233, 0.5), rgb(62, 143, 242));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+// 表单
+:deep(.van-field__control) {
+  margin-top: 40px;
+  border: none;
+  border-bottom: 0.5px solid rgb(0, 0, 0);
+}
+:deep(#van-field-2-input) {
+  margin-top: 10px;
+}
+//
+.change-txt-box {
+  display: flex;
+  justify-content: space-between;
+}
+
+:deep(.van-button) {
+  margin-top: 66px;
+}
+// 同意协议
+.change-login-way {
+  margin-top: 23px;
+  font-family: Noto Sans SC;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  * {
+    color: rgb(118, 118, 118);
+  }
+}
+</style>

@@ -31,6 +31,7 @@
   }
   span {
     display: block;
+    font-family: Noto Sans SC;
   }
 
   /* 阅读我们的条款和条件。 */

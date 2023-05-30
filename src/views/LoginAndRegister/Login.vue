@@ -17,14 +17,14 @@
           name="手机号"
           v-model="phoneNumber"
           placeholder="请输入手机号"
-          :rules="[{ required: true, message: '请填写手机号' }]"
+          :rules="[{ required: true, pattern: reg_tel, message: '请填写正确的手机号' }]"
           class="inp"
         />
       </van-cell-group>
     </van-form>
 
     <div class="change-login-way">
-      <span>账号密码登录</span>
+      <RouterLink :to="{ name: 'loginByPassword' }">账号密码登录</RouterLink>
     </div>
 
     <van-button color="rgb(64, 169, 255)" round @click="sendCode">获取验证码</van-button>
@@ -38,24 +38,22 @@ import { ref } from 'vue'
 import { axiosPost } from '@/axios/api'
 import { axiosConfig } from '@/axios/axios.config'
 import { useStore } from '@/stores'
-import Back from '../components/Back.vue'
+import Back from '../../components/Back.vue'
 import Footer from '@/components/Footer.vue'
 import router from '@/router'
+import { reg_tel } from '@/util/reg'
 
 const store = useStore()
 const phoneNumber = ref('')
 const sms = ref('')
 
 const sendCode = async () => {
-  store.phone = phoneNumber.value
-
-  const json = {
-    phone: store.phone
+  if (phoneNumber?.value !== '') {
+    store.phone = phoneNumber.value
   }
-
-  const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.sendCode, json)
-
-  console.log(json)
+  const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.sendCode, {
+    phone: store.phone
+  })
 
   router.push({ name: 'sms' })
   console.log(data)
@@ -114,10 +112,12 @@ const logout = async () => {
 // 同意协议
 .change-login-way {
   margin-top: 23px;
-  color: rgb(118, 118, 118);
   font-family: Noto Sans SC;
   font-size: 12px;
   font-weight: 400;
   line-height: 18px;
+  * {
+    color: rgb(118, 118, 118);
+  }
 }
 </style>
