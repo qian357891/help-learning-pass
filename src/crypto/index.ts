@@ -5,7 +5,7 @@ import CryptoJS from 'crypto-js'
 // const keyHex = CryptoJS.enc.Utf8.parse('xxlzqqlzxqkyzhwj')
 type WordArray = CryptoJS.lib.WordArray
 
-const getDataHex = (data: string) => {
+const getHexData = (data: string) => {
   return CryptoJS.enc.Utf8.parse(data)
 }
 
@@ -19,5 +19,5 @@ const getHexPass = (dataHex: WordArray, keyHex: WordArray) => {
 //   getHexPass(CryptoJS.enc.Utf8.parse('123'), CryptoJS.enc.Utf8.parse('xxlzqqlzxqkyzhwj')).toString()
 // )
 
-export { getHexPass, getDataHex }
+export { getHexPass, getHexData }
 export type { WordArray }

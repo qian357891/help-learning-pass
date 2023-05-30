@@ -3,13 +3,13 @@
     <Back />
 
     <div class="page-title">
-      <span>亲，欢迎登录</span>
+      <span>亲，欢迎登录！</span>
     </div>
 
-    <div class="prompt">
+    <!-- <div class="prompt">
       <span>没有帮帮账号？ </span>
       <RouterLink :to="{ name: 'register' }">立即注册</RouterLink>
-    </div>
+    </div> -->
 
     <van-form @submit="">
       <van-cell-group inset>
@@ -51,9 +51,11 @@ import { useStore } from '@/stores'
 import Back from '../../components/Back.vue'
 import Footer from '@/components/Footer.vue'
 import router from '@/router'
-import { getHexPass, getDataHex } from '@/crypto'
+import { getHexPass, getHexData } from '@/crypto'
 import type { WordArray } from '@/crypto'
 import { reg_tel } from '@/util/reg'
+import CryptoJS from 'crypto-js'
+import { showFailToast } from 'vant'
 
 const store = useStore()
 const phoneNumber = ref('')
@@ -63,22 +65,29 @@ const password = ref('')
 let keyHex: WordArray
 const getkeyHex = async () => {
   const data = await axiosGet(axiosConfig.rootUrl + axiosConfig.getKey)
-  keyHex = data.data.key
+  keyHex = CryptoJS.enc.Utf8.parse(data.data.key)
   console.log(keyHex)
 }
 
 const login = async () => {
-  store.phone = phoneNumber.value
+  if (reg_tel.test(phoneNumber.value)) {
+    store.phone = phoneNumber.value
+  } else {
+    return
+  }
 
   //使用加密后的密码进行登录
   await getkeyHex()
-  const hexpass = getHexPass(getDataHex(password.value), keyHex)
+  const hexpass = getHexPass(getHexData(password.value), keyHex)
   const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.loginByPassword, {
     phone: store.phone,
     password: hexpass.toString()
   })
 
   store.token = await data.data.token
+  if (data.data.code == 500) {
+    showFailToast('手机号或密码错误！')
+  }
   if (store.token) {
     router.push({ name: 'home' })
   }
@@ -103,34 +112,21 @@ const logout = async () => {
   line-height: 53px;
   letter-spacing: 0px;
 }
-// 提示
-.prompt {
-  margin-top: 8px;
 
-  * {
-    font-family: Noto Sans SC;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 21px;
-    letter-spacing: 0px;
-  }
-  :nth-child(2) {
-    background: linear-gradient(145deg, rgba(0, 210, 233, 0.5), rgb(62, 143, 242));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-}
 // 表单
 :deep(.van-field__control) {
   margin-top: 40px;
   border: none;
   border-bottom: 0.5px solid rgb(0, 0, 0);
 }
-:deep(#van-field-2-input) {
-  margin-top: 10px;
+
+:deep(.van-form) {
+  .van-field:nth-child(2) {
+    input {
+      margin-top: 10px;
+    }
+  }
 }
-//
 .change-txt-box {
   display: flex;
   justify-content: space-between;

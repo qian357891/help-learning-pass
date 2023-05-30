@@ -49,6 +49,7 @@ import Back from '@/components/Back.vue'
 import Footer from '@/components/Footer.vue'
 import { watch } from 'vue'
 import router from '@/router'
+import { showFailToast } from 'vant'
 
 const store = useStore()
 const sms = ref('')
@@ -57,6 +58,10 @@ const login = async () => {
     phone: store.phone,
     code: sms.value
   })
+  if (data.data.code == 500) {
+    showFailToast('验证码错误！')
+    return
+  }
   store.token = data.data.token
   console.log(data)
 }
@@ -119,12 +124,6 @@ const sendCode = async () => {
     font-weight: 400;
     line-height: 21px;
     letter-spacing: 0px;
-  }
-  :nth-child(2) {
-    background: linear-gradient(145deg, rgba(0, 210, 233, 0.5), rgb(62, 143, 242));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
   }
 }
 // 验证码输入框
