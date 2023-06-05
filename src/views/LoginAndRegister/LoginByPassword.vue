@@ -85,6 +85,7 @@ const login = async () => {
   })
 
   store.token = await data.data.token
+  localStorage.setItem('token', store.token as string)
   if (data.data.code == 500) {
     showFailToast('手机号或密码错误！')
   }

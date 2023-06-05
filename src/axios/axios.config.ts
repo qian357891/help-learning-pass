@@ -6,7 +6,9 @@ export const axiosConfig = {
   getKey: '/user/getKey',
   logout: '/user/logout',
   alterUser: '/user/alterUser',
-  uploadImg: '/img/task/upload'
+  uploadImg: '/img/task/upload',
+  taskScreen: '/task/screen',
+  indexTaskTopN: '/index/data/topN'
 }
 
 // export const axiosConfig = {

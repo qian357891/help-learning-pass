@@ -1,4 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400&display=swap');
+
+@font-face {
+  font-family: YouSheBiaoTiHei;
+  src: url('./fonts/优设标题黑.ttf');
+}
+
+@font-face {
+  font-family: ZhenyanGB;
+  src: url('./fonts/ZhenyanGB.ttf');
+}
+
 .html-wrap {
   position: relative;
   left: 50%;

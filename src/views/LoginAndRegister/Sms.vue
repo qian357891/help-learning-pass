@@ -62,7 +62,8 @@ const login = async () => {
     showFailToast('验证码错误！')
     return
   }
-  store.token = data.data.token
+  store.token = await data.data.token
+  localStorage.setItem('token', store.token as string)
   console.log(data)
 }
 

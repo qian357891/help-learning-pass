@@ -50,14 +50,14 @@ const sendCode = async () => {
 }
 
 const store = useStore()
-const login = async () => {
-  const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.loginAndRegister, {
-    phone: phoneNumber.value,
-    code: sms.value
-  })
-  console.log(data)
-  store.token = data.data.token
-}
+// const login = async () => {
+//   const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.loginAndRegister, {
+//     phone: phoneNumber.value,
+//     code: sms.value
+//   })
+//   console.log(data)
+//   store.token = data.data.token
+// }
 
 const logout = async () => {
   const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.logout, {
