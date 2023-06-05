@@ -40,31 +40,32 @@
       <div class="choose">
         <span>任务中心</span>
         <span
-          :class="{ chosed: store.categoryChose === key }"
-          v-for="(item, key) in chooseList"
-          @click="chooseCategory(key)"
-          >{{ item }}</span
+          :class="{ chosed: store.categoryChose == item.id }"
+          v-for="item in chooseList"
+          :key="item.id"
+          @click="chooseCategory(item.id)"
+          >{{ item.name }}</span
         >
       </div>
 
       <!-- 主内容 -->
       <div class="task-review-box">
-        <div v-for="(item, id) in chosedTaskList" class="task-review">
+        <div v-for="(item, id) in chosedTaskList" :key="id" class="task-review">
           <div>
             <img src="../assets/img/task-page/default-img.png" alt="" />
           </div>
           <div class="task-review-content">
             <!-- 任务标题 -->
             <header class="task-review-title">
-              <div>
-                <span> 外卖 </span>
+              <div :style="{ background: findByProp(item, 'color') }">
+                <span> {{ findByProp(item, 'name') }} </span>
               </div>
               <div>
                 <span>{{ item.taskName }}</span>
               </div>
             </header>
             <!--  -->
-            <span>内容 | 雷永江代言的那家，一两不加腐竹。</span>
+            <span>内容 | {{ item.taskInfo }}</span>
             <span>任务接取时间：{{ item.expirationTime }}</span>
           </div>
           <div>￥{{ item.taskPrice }}</div>
@@ -98,7 +99,7 @@ import { axiosGet, axiosPost } from '@/axios/api'
 import { axiosConfig } from '@/axios/axios.config'
 import router from '@/router'
 import { useStore } from '@/stores'
-import { ref, watch, type Ref, onMounted } from 'vue'
+import { ref, toRaw, type Ref } from 'vue'
 import { type TaskList } from '../axios/types/Task'
 
 const store = useStore()
@@ -110,27 +111,46 @@ const toMe = () => {
   router.push({ name: 'login' })
 }
 
-const chooseList = ['全部', '代取', '代办', '跳蚤', '其他']
-
-const chooseCategory = async (key: number) => {
-  const data = await axiosPost(axiosConfig.taskScreen, {
-    categoryId: key,
-    pageNo: 1
-  })
-
-  chosedTaskList.value = data.data
-  console.log(data.data)
-  console.log(chosedTaskList)
-  return data.data
+interface ChooseList {
+  name: string
+  id: number
+  color?: undefined
 }
 
-let chosedTaskList: Ref<Array<TaskList>> = ref([])
+const chooseList = [
+  { name: '全部', id: 0 },
+  { name: '代取', id: 2, color: 'rgb(69, 133, 245)' },
+  { name: '代办', id: 4, color: 'rgb(3, 189, 97)' },
+  { name: '外卖', id: 1, color: 'rgb(255, 182, 149)' },
+  { name: '跳蚤', id: 3, color: 'rgb(255, 213, 87)' },
+  { name: '其他', id: 5 }
+]
+// 通过属性查找
+const findByProp = (item: TaskList, key: keyof ChooseList) =>
+  chooseList.find((el) => el.id == item.categoryId)?.[key]
+
+const chosedTaskList: Ref<Array<TaskList>> = ref([])
+
+const chooseCategory = async (key: number) => {
+  store.categoryChose = key
+  if (key === 0) {
+    getAllTaskInfo()
+    return
+  }
+
+  const data = await axiosPost(axiosConfig.taskScreen, {
+    categoryId: key
+  })
+  chosedTaskList.value = data.data.data
+}
 
 // 获取“全部”内容
-;(async () => {
+const getAllTaskInfo = async () => {
   const data = await axiosGet(axiosConfig.indexTaskTopN)
   chosedTaskList.value = data.data.taskTopn
-})()
+}
+
+getAllTaskInfo()
 </script>
 
 <style scoped lang="scss">
@@ -210,9 +230,9 @@ let chosedTaskList: Ref<Array<TaskList>> = ref([])
 }
 // 已选中类别
 .chosed {
-  color: rgb(0, 0, 0);
-  font-size: 11px;
-  font-weight: 400;
+  color: rgb(0, 0, 0) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
   line-height: 22px;
   letter-spacing: 0px;
 }
@@ -231,7 +251,7 @@ let chosedTaskList: Ref<Array<TaskList>> = ref([])
 
   span:nth-child(n + 3)::before {
     content: '/';
-    margin-right: 10px;
+    margin-right: 5px;
     color: rgb(201, 205, 212);
   }
 
