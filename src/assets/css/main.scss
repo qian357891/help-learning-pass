@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400&display=swap');
+
+@font-face {
+  font-family: YouSheBiaoTiHei;
+  src: url('../fonts/优设标题黑.ttf');
+}
+
+@font-face {
+  font-family: ZhenyanGB;
+  src: url('../fonts/ZhenyanGB.ttf');
+}
+
+@font-face {
+  font-family: Alibaba-PuHuiTi;
+  src: url('../fonts/AlibabaPuHuiTi-2-65-Medium.ttf');
+}
+
+.html-wrap {
+  position: relative;
+  left: 50%;
+
+  transform: translate(-50%);
+  max-width: 438px;
+  height: 100vh;
+}
+
+.outtest-box {
+  margin: 0 18px;
+}
+
+.flex-direction-col {
+  display: flex;
+  flex-direction: column;
+}
+
+// 表单沾满
+.van-form {
+  * {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}

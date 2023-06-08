@@ -11,5 +11,13 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  css: {
+    preprocessorOptions: {
+      // 导入scss预编译程序
+      scss: {
+        additionalData: `@use "@/assets/css/mixin.scss" as *;`
+      }
+    }
   }
 })

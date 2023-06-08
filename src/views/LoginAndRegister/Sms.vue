@@ -1,6 +1,6 @@
 <template>
   <div class="outtest-box flex-direction-col">
-    <Back />
+    <Back :color="'black'" />
 
     <div class="page-title">
       <span>输入验证码</span>
@@ -63,7 +63,6 @@ const login = async () => {
     return
   }
   store.token = await data.data.token
-  localStorage.setItem('token', store.token as string)
   console.log(data)
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="outtest-box flex-direction-col">
-    <Back />
+    <Back :color="'black'" />
 
     <div class="page-title">
       <span>手机号注册</span>

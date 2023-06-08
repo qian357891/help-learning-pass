@@ -12,25 +12,13 @@
     <!-- 分类按钮 -->
     <div class="classify">
       <div class="classify-box">
-        <div>
-          <img src="../assets/icons/home-page/aixin.png.svg" alt="" />
-          <span>代取</span>
-        </div>
-        <div>
-          <img src="../assets/icons/home-page/weizhi_1.png.svg" alt="" />
-          <span>代办</span>
-        </div>
-        <div>
-          <img src="../assets/icons/home-page/ziyuan.png.svg" alt="" />
-          <span>外卖</span>
-        </div>
-        <div>
-          <img src="../assets/icons/home-page/jiaoyisuo.png.svg" alt="" />
-          <span>跳蚤</span>
-        </div>
-        <div>
-          <img src="../assets/icons/home-page/qita.png.svg" alt="" />
-          <span>其他</span>
+        <div
+          @click="toAddTask(item.id)"
+          v-for="item in chooseList.slice(1, chooseList.length)"
+          :key="item.id"
+        >
+          <img :src="item.img" :alt="item.name" />
+          <span>{{ item.name }}</span>
         </div>
       </div>
     </div>
@@ -49,7 +37,7 @@
       </div>
 
       <!-- 主内容 -->
-      <div class="task-review-box">
+      <div class="task-review-box" style="margin: 20px 0">
         <div v-for="(item, id) in chosedTaskList" :key="id" class="task-review">
           <div>
             <img src="../assets/img/task-page/default-img.png" alt="" />
@@ -68,11 +56,14 @@
             <span>内容 | {{ item.taskInfo }}</span>
             <span>任务接取时间：{{ item.expirationTime }}</span>
           </div>
-          <div>￥{{ item.taskPrice }}</div>
+          <div>
+            <div>￥{{ item.taskPrice }}</div>
+          </div>
         </div>
       </div>
     </div>
     <!-- 底部导航 -->
+    <div style="height: 50px"></div>
     <div class="footer-nav">
       <van-tabbar v-model="active">
         <van-tabbar-item icon="home-o">首页</van-tabbar-item>
@@ -99,7 +90,7 @@ import { axiosGet, axiosPost } from '@/axios/api'
 import { axiosConfig } from '@/axios/axios.config'
 import router from '@/router'
 import { useStore } from '@/stores'
-import { ref, toRaw, type Ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { type TaskList } from '../axios/types/Task'
 
 const store = useStore()
@@ -119,11 +110,31 @@ interface ChooseList {
 
 const chooseList = [
   { name: '全部', id: 0 },
-  { name: '代取', id: 2, color: 'rgb(69, 133, 245)' },
-  { name: '代办', id: 4, color: 'rgb(3, 189, 97)' },
-  { name: '外卖', id: 1, color: 'rgb(255, 182, 149)' },
-  { name: '跳蚤', id: 3, color: 'rgb(255, 213, 87)' },
-  { name: '其他', id: 5 }
+  {
+    name: '代取',
+    id: 2,
+    color: 'rgb(69, 133, 245)',
+    img: '/src/assets/icons/home-page/aixin.png.svg'
+  },
+  {
+    name: '代办',
+    id: 4,
+    color: 'rgb(3, 189, 97)',
+    img: '/src/assets/icons/home-page/weizhi_1.png.svg'
+  },
+  {
+    name: '外卖',
+    id: 1,
+    color: 'rgb(255, 182, 149)',
+    img: '/src/assets/icons/home-page/ziyuan.png.svg'
+  },
+  {
+    name: '跳蚤',
+    id: 3,
+    color: 'rgb(255, 213, 87)',
+    img: '/src/assets/icons/home-page/jiaoyisuo.png.svg'
+  },
+  { name: '其他', id: 5, img: '/src/assets/icons/home-page/qita.png.svg' }
 ]
 // 通过属性查找
 const findByProp = (item: TaskList, key: keyof ChooseList) =>
@@ -151,6 +162,11 @@ const getAllTaskInfo = async () => {
 }
 
 getAllTaskInfo()
+
+const toAddTask = (id: number) => {
+  store.categoryChose = id
+  router.push({ name: 'addTask' })
+}
 </script>
 
 <style scoped lang="scss">
@@ -181,7 +197,7 @@ getAllTaskInfo()
 // 分类
 .classify {
   position: absolute;
-  width: 407px;
+  width: 390px;
   height: 69px;
   top: 180px;
   left: 50%;
@@ -218,9 +234,9 @@ getAllTaskInfo()
 }
 // 任务列表
 .list {
-  width: 407px;
+  // width: 407px;
   // box-sizing: border-box;
-  margin: 30px 15px 12px 0px;
+  margin: 30px 12px 12px 12px;
 
   background: rgb(255, 255, 255);
   border: 3px solid rgb(255, 255, 255);
@@ -282,7 +298,7 @@ getAllTaskInfo()
 
   & > div:last-child {
     margin-left: auto;
-
+    padding-right: 15px;
     display: flex;
     flex-direction: column-reverse;
     /* ￥16.5 */

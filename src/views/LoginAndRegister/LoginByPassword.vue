@@ -1,6 +1,6 @@
 <template>
   <div class="outtest-box flex-direction-col">
-    <Back />
+    <Back :color="'black'" />
 
     <div class="page-title">
       <span>亲，欢迎登录！</span>
@@ -85,7 +85,6 @@ const login = async () => {
   })
 
   store.token = await data.data.token
-  localStorage.setItem('token', store.token as string)
   if (data.data.code == 500) {
     showFailToast('手机号或密码错误！')
   }

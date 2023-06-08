@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import Login from '@/views/LoginAndRegister/Login.vue'
 import LoginByPassword from '@/views/LoginAndRegister/LoginByPassword.vue'
 import Sms from '@/views/LoginAndRegister/Sms.vue'
+import AddTask from '@/views/Task/AddTask.vue'
 // import RegisterVue from '@/views/abandoned/Register.vue'
 
 const router = createRouter({
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/sms',
       name: 'sms',
       component: Sms
+    },
+    {
+      path: '/add-task',
+      name: 'addTask',
+      component: AddTask
     }
   ]
 })

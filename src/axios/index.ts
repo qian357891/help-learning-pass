@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 const interceptor = axiosInstance.interceptors.request.use(
   (config) => {
     // 在发送请求之前做些什么
-    config.headers!['token'] = useStore().token
+    config.headers!['token'] = JSON.parse(localStorage.getItem('store') as string).token
     return config
   },
   (error) => {
