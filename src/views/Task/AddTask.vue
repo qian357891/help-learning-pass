@@ -33,23 +33,31 @@
         <!-- 任务详细 -->
         <main class="task-info content-box">
           <div>
-            <span>取货时间</span>
-            <span>重庆邮电大学移通学院C区 </span>
+            <span>任务名</span>
+            <TheInput v-model:value="info.taskName" />
+            <!-- <span>重庆邮电大学移通学院C区 </span> -->
+          </div>
+
+          <div>
+            <span>取货地点</span>
+            <TheInput v-model:value="info.fromPlace" />
+            <!-- <span>重庆邮电大学移通学院C区 </span> -->
           </div>
 
           <div>
             <span>收货地点</span>
-            <span>重庆邮电大学移通学院C区 </span>
+            <TheInput v-model:value="info.toPlace" />
+            <!-- <span>重庆邮电大学移通学院C区 </span> -->
           </div>
 
           <div>
             <span>联系人</span>
-            <span>十二 19122222222</span>
+            <span>{{ userInfo?.username }} {{ userInfo?.phone }}</span>
           </div>
 
           <div>
             <span>任务截止时间</span>
-            <span class="task-deadline">5月30日 18:00</span>
+            <PopupPicker :color="'rgb(8, 131, 217, 0.68)'" />
           </div>
 
           <div>
@@ -67,21 +75,25 @@
 
           <div>
             <span>任务详细</span>
-            <div class="task-info-input"></div>
+            <div>
+              <TheTextarea v-model:value="info.taskInfo" />
+            </div>
             <span>任务详情只有本人和接取人可以看见，请不要填写银行卡密码等重要信息</span>
           </div>
         </main>
 
         <!-- 费用详细 -->
-        <div class="content-box cost-info">
+        <div class="cost-info task-info content-box">
           <div>
             <span>代取费用</span>
-            <span></span>
+            <TheInput v-model:value="cost.getCost" />
+            <!-- <span></span> -->
           </div>
 
           <div>
             <span>任务赏金</span>
-            <span></span>
+            <TheInput v-model:value="cost.reward" />
+            <!-- <span></span> -->
           </div>
 
           <div>
@@ -91,13 +103,14 @@
         </div>
       </div>
     </div>
+
     <!-- 费用总和 -->
     <div style="height: 69px"></div>
     <footer>
       <div>
         <div>
           <span>合计</span>
-          <span>￥10.50</span>
+          <span>￥{{ +cost.getCost + +cost.reward }}</span>
         </div>
         <div>
           <span>发布后将有5分钟的冻结时间，冻结时间结束后可以取消发布</span>
@@ -105,16 +118,23 @@
       </div>
 
       <div>
-        <van-button round color="rgb(64, 169, 255)">立即发布</van-button>
+        <van-button round color="rgb(64, 169, 255)" @click="demo">立即发布</van-button>
       </div>
     </footer>
   </div>
 </template>
 
 <script setup lang="ts">
+import { axiosPost } from '@/axios/api'
+import { axiosConfig } from '@/axios/axios.config'
 import Back from '@/components/Back.vue'
+import PopupPicker from '@/components/info/PopupPicker.vue'
+import TheInput from '@/components/info/TheInput.vue'
+import TheTextarea from '@/components/info/TheTextarea.vue'
 import { useStore } from '@/stores'
+import type { UserInfo } from '@/axios/types/UserInfo'
 import { ref } from 'vue'
+import type { Ref } from 'vue'
 
 const afterRead = (file: any) => {
   // 此时可以自行将文件上传至服务器
@@ -125,13 +145,43 @@ const fileList = ref([])
 const store = useStore()
 
 const chooseList = [
+  { name: '外卖', id: 1, color: 'rgb(255, 182, 149)' },
   { name: '代取', id: 2, color: 'rgb(69, 133, 245)' },
-  { name: '代办', id: 4, color: 'rgb(3, 189, 97)' },
-  { name: '外卖', id: 1, color: 'rgb(255, 182, 149)' }
+  { name: '代办', id: 4, color: 'rgb(3, 189, 97)' }
 ]
 
 const chooseCategory = async (key: number) => {
   store.categoryChose = key
+}
+
+// 取得用户数据
+const userInfo: Ref<UserInfo | undefined> = ref()
+
+;(async () => {
+  const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.getUserInfo, {})
+  userInfo.value = data.data.userInfo
+})()
+
+const cost = ref({
+  getCost: '0',
+  reward: '0'
+})
+const show = ref(false)
+// 详细数据
+const info = ref({
+  categoryId: store.categoryChose,
+  taskName: '',
+  fromPlace: '',
+  toPlace: '',
+  contactWay: userInfo.value?.phone,
+  userId: userInfo.value?.id,
+  taskInfo: '',
+  taskPrice: +cost.value.getCost + +cost.value.reward,
+  expirationTime: ''
+})
+
+const demo = () => {
+  console.log(info.value)
 }
 </script>
 
@@ -273,11 +323,6 @@ header {
   }
 }
 
-.task-deadline {
-  opacity: 0.68;
-  color: rgb(8, 131, 217) !important;
-}
-
 .img-submit-prompt {
   display: flex;
   flex-direction: column;
@@ -286,11 +331,6 @@ header {
   @include text(rgb(133, 135, 136), 9px);
 }
 
-.task-info-input {
-  height: 128px;
-  background: rgb(249, 249, 249);
-  border-radius: 10px;
-}
 // 费用详细
 .cost-info {
   padding-top: 19px;
