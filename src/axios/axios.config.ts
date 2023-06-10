@@ -22,6 +22,7 @@ export const axiosConfig = {
 
   //社区
   getPostList: '/community/list',
+  getCommunityInfo: '/community/getCommunityInfo',
 
   // socekt
   socketUserId: '/websocket',

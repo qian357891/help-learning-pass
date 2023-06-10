@@ -54,7 +54,7 @@ const router = createRouter({
       component: CommunityIndex
     },
     {
-      path: '/community/post-info',
+      path: '/community/post-info/:communityId',
       name: 'postInfo',
       component: PostInfo
     }

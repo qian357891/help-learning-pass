@@ -15,7 +15,7 @@
           :key="postPreInfo.id"
         >
           <div>
-            <div @click="toPostInfo">
+            <div @click="toPostInfo(postPreInfo.id)">
               <div>
                 <img src="@/assets/img/task-page/default-img.png" class="avatar" alt="" />
                 <div>
@@ -70,8 +70,8 @@ const postPreInfoList: Array<PostPreInfo> = (
 
 console.log(postPreInfoList)
 
-const toPostInfo = () => {
-  router.push({ name: 'postInfo', params: {} })
+const toPostInfo = (id: number) => {
+  router.push({ name: 'postInfo', params: { communityId: id } })
 }
 </script>
 
