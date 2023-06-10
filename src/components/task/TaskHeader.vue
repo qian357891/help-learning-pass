@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="title">
-      <Back :back-page="backPage" />
-      <span>{{ props.title }}</span>
+      <Back :back-page="backPage" :color="color" />
+      <span :style="{ color: color }">{{ title }}</span>
     </div>
   </div>
 </template>
@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import Back from '../Back.vue'
 
-const props = defineProps(['title', 'backPage'])
+defineProps(['title', 'backPage', 'color'])
 </script>
 
 <style scoped lang="scss">

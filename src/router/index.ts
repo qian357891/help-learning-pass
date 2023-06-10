@@ -6,6 +6,7 @@ import Sms from '@/views/LoginAndRegister/Sms.vue'
 import AddTask from '@/views/Task/AddTask.vue'
 import TaskInfo from '@/views/Task/TaskInfo.vue'
 import CommunityIndex from '@/views/community/CommunityIndex.vue'
+import PostInfo from '@/views/community/PostInfo.vue'
 // import RegisterVue from '@/views/abandoned/Register.vue'
 
 const router = createRouter({
@@ -51,6 +52,11 @@ const router = createRouter({
       path: '/community/index',
       name: 'communityIndex',
       component: CommunityIndex
+    },
+    {
+      path: '/community/post-info',
+      name: 'postInfo',
+      component: PostInfo
     }
   ]
 })
