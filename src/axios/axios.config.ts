@@ -21,5 +21,10 @@ export const axiosConfig = {
   searchTask: '/task/search',
 
   //社区
-  getPostList: '/community/list'
+  getPostList: '/community/list',
+
+  // socekt
+  socketUserId: '/websocket',
+  // socketRoot: 'ws://47.109.83.157:8081'
+  socketRoot: 'ws://xxl.vip.aeert.com'
 }

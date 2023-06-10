@@ -2,7 +2,7 @@
   <div>
     <div>
       <header>
-        <TaskHeader :color="'rgb(0, 0, 0)'" :title="'社区'" :back-page="'CommunityIndex'" />
+        <TaskHeader :color="'rgb(0, 0, 0)'" :title="'社区'" :back-page="'communityIndex'" />
       </header>
     </div>
   </div>

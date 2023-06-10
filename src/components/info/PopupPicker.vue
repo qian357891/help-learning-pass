@@ -4,7 +4,7 @@
     <van-cell
       style="padding: 0"
       :style="{ color: props.color }"
-      :title="`${currentDate.join('/')}/${currentTime.join(':')}`"
+      :title="selectDate"
       is-link
       @click="showPopup"
     />
@@ -25,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { ref } from 'vue'
 
 const props = defineProps(['color'])
@@ -46,6 +47,10 @@ const onCancel = () => {
 
 const minDate = ref(new Date(Date.now()))
 const maxDate = new Date(2025, 11, 30)
+
+const selectDate = computed(
+  () => `${currentDate.value.join('-')} ${currentTime.value.join(':')}:00`
+)
 </script>
 
 <style scoped lang="scss"></style>
