@@ -18,5 +18,8 @@ export const axiosConfig = {
   // 接单
   acceptCreate: '/accept/create',
   // 搜索
-  searchTask: '/task/search'
+  searchTask: '/task/search',
+
+  //社区
+  getPostList: '/community/list'
 }

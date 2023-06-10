@@ -5,23 +5,27 @@
         <!-- 头部 -->
         <header>
           <div><span>关注</span></div>
-          <div><span>推荐</span></div>
+          <div class="chose"><span>推荐</span></div>
           <div><span>热门</span></div>
         </header>
         <!-- 帖子 -->
-        <main class="content-box task-info">
+        <main
+          class="content-box task-info"
+          v-for="postPreInfo in postPreInfoList"
+          :key="postPreInfo.id"
+        >
           <div>
             <div>
               <img src="@/assets/img/task-page/default-img.png" class="avatar" alt="" />
               <div>
-                <span>用户名</span>
+                <span>{{ postPreInfo.userName }}</span>
               </div>
             </div>
             <div>
-              <span>帖子标题</span>
+              <span>{{ postPreInfo.title }}</span>
             </div>
             <div>
-              <span>帖子内容</span>
+              <span>{{ postPreInfo.content }}</span>
             </div>
             <div>
               <img src="@/assets/img/task-page/default-img.png" class="img" alt="" />
@@ -30,15 +34,15 @@
             <div class="postStatus">
               <div>
                 <van-icon name="good-job-o" size="20" />
-                <span>1000</span>
+                <span>{{ postPreInfo.likeCount }}</span>
               </div>
               <div>
                 <van-icon name="chat-o" size="20" />
-                <span>200</span>
+                <span>{{ postPreInfo.commentCount }}</span>
               </div>
               <div>
                 <van-icon name="star-o" size="20" />
-                <span>300</span>
+                <span>{{ postPreInfo.favoriteCount }}</span>
               </div>
             </div>
           </div>
@@ -52,7 +56,16 @@
 </template>
 
 <script setup lang="ts">
+import { axiosGet } from '@/axios/api'
+import { axiosConfig } from '@/axios/axios.config'
 import FooterNav from '@/components/nav/FooterNav.vue'
+import { type PostPreInfo } from '@/axios/types/Post'
+
+const postPreInfoList: Array<PostPreInfo> = (
+  await axiosGet(axiosConfig.rootUrl + axiosConfig.getPostList)
+).data.postingInfos
+
+console.log(postPreInfoList)
 </script>
 
 <style scoped lang="scss">
@@ -65,12 +78,25 @@ header {
   @include flex-center();
   & > div {
     margin-left: 23px;
-
     @include text(rgb(147, 147, 147), 16px, 400, Noto Sans SC);
+  }
+  .chose {
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    transform: translate(0, 2px);
+    span::after {
+      content: '';
+      display: block;
+      height: 2px;
+      width: 20px;
+      background: #000; /**控制图标颜色**/
+      transform: translate(50%);
+    }
   }
 }
 
 main {
+  margin-top: 20px;
   span {
     color: rgb(0, 0, 0) !important;
   }
