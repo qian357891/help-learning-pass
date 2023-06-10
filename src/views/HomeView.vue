@@ -1,86 +1,94 @@
 <template>
-  <div class="wrap">
-    <img class="hero" src="../assets/img/index-img.png" alt="" />
-    <div class="search">
-      <van-search v-model="search" show-action placeholder="请输入你需要搜索任务">
-        <template #action>
-          <span>搜索</span>
-        </template>
-      </van-search>
-    </div>
-
-    <!-- 分类按钮 -->
-    <div class="classify">
-      <div class="classify-box">
-        <div
-          @click="toAddTask(item.id)"
-          v-for="item in chooseList.slice(1, chooseList.length)"
-          :key="item.id"
+  <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功">
+    <div class="wrap">
+      <img class="hero" src="../assets/img/index-img.png" alt="" />
+      <div class="search">
+        <van-search
+          v-model="search"
+          shape="round"
+          @search="onSearch"
+          show-action
+          placeholder="请输入你需要搜索任务"
         >
-          <img :src="item.img" :alt="item.name" />
-          <span>{{ item.name }}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 任务列表 -->
-    <div class="list">
-      <div class="choose">
-        <span>任务中心</span>
-        <span
-          :class="{ chosed: store.categoryChose == item.id }"
-          v-for="item in chooseList"
-          :key="item.id"
-          @click="chooseCategory(item.id)"
-          >{{ item.name }}</span
-        >
+          <template #action>
+            <span @click="onSearch">搜索</span>
+          </template>
+        </van-search>
       </div>
 
-      <!-- 主内容 -->
-      <div class="task-review-box" style="margin: 20px 0">
-        <div
-          v-for="item in chosedTaskList"
-          :key="item.id"
-          class="task-review"
-          @click="toTaskInfo(item.id)"
-        >
-          <div>
-            <img src="../assets/img/task-page/default-img.png" alt="" />
-          </div>
-          <div class="task-review-content">
-            <!-- 任务标题 -->
-            <header class="task-review-title">
-              <div :style="{ background: findByProp(item, 'color') }">
-                <span> {{ findByProp(item, 'name') }} </span>
-              </div>
-              <div>
-                <span>{{ item.taskName }}</span>
-              </div>
-            </header>
-            <!--  -->
-            <span>内容 | {{ item.taskInfo }}</span>
-            <span>任务接取时间：{{ item.expirationTime }}</span>
-          </div>
-          <div>
-            <div>￥{{ item.taskPrice }}</div>
+      <!-- 分类按钮 -->
+      <div class="classify">
+        <div class="classify-box">
+          <div
+            @click="toAddTask(item.id)"
+            v-for="item in chooseList.slice(1, chooseList.length)"
+            :key="item.id"
+          >
+            <img :src="item.img" :alt="item.name" />
+            <span>{{ item.name }}</span>
           </div>
         </div>
       </div>
-    </div>
-    <!-- 底部导航 -->
-    <footer-nav />
 
-    <van-back-top
-      bottom="10vh"
-      style="
-        right: 0px;
-        border-radius: 15px 0 0 15px;
-        height: 50px;
-        width: 55px;
-        background-color: rgba(64, 169, 255, 0.4);
-      "
-    />
-  </div>
+      <!-- 任务列表 -->
+      <div class="list">
+        <div class="choose">
+          <span>任务中心</span>
+          <span
+            :class="{ chosed: store.categoryChose == item.id }"
+            v-for="item in chooseList"
+            :key="item.id"
+            @click="chooseCategory(item.id)"
+            >{{ item.name }}</span
+          >
+        </div>
+
+        <!-- 主内容 -->
+        <div class="task-review-box" style="margin: 20px 0">
+          <div
+            v-for="item in chosedTaskList"
+            :key="item.id"
+            class="task-review"
+            @click="toTaskInfo(item.id)"
+          >
+            <div>
+              <img src="../assets/img/task-page/default-img.png" :alt="item.taskName" class="img" />
+            </div>
+            <div class="task-review-content">
+              <!-- 任务标题 -->
+              <header class="task-review-title">
+                <div :style="{ background: findByProp(item, 'color') }">
+                  <span> {{ findByProp(item, 'name') }} </span>
+                </div>
+                <div>
+                  <span>{{ item.taskName }}</span>
+                </div>
+              </header>
+              <!--  -->
+              <span>内容 | {{ item.taskInfo }}</span>
+              <span>任务接取时间：{{ item.expirationTime }}</span>
+            </div>
+            <div>
+              <div>￥{{ item.taskPrice }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 底部导航 -->
+      <footer-nav />
+
+      <van-back-top
+        bottom="10vh"
+        style="
+          right: 0px;
+          border-radius: 15px 0 0 15px;
+          height: 50px;
+          width: 55px;
+          background-color: rgba(64, 169, 255, 0.4);
+        "
+      />
+    </div>
+  </van-pull-refresh>
 </template>
 
 <script setup lang="ts">
@@ -91,8 +99,11 @@ import { useStore } from '@/stores'
 import { ref, type Ref } from 'vue'
 import { type TaskList } from '../axios/types/Task'
 import FooterNav from '@/components/nav/FooterNav.vue'
+import { chooseList } from '@/util/category'
 
 const store = useStore()
+store.categoryChose = 0
+
 const search = ref('')
 
 interface ChooseList {
@@ -101,35 +112,6 @@ interface ChooseList {
   color?: undefined
 }
 
-const chooseList = [
-  { name: '全部', id: 0 },
-  {
-    name: '外卖',
-    id: 1,
-    color: 'rgb(255, 182, 149)',
-    img: '/src/assets/icons/home-page/ziyuan.png.svg'
-  },
-  {
-    name: '代取',
-    id: 2,
-    color: 'rgb(69, 133, 245)',
-    img: '/src/assets/icons/home-page/aixin.png.svg'
-  },
-  {
-    name: '跳蚤',
-    id: 3,
-    color: 'rgb(255, 213, 87)',
-    img: '/src/assets/icons/home-page/jiaoyisuo.png.svg'
-  },
-  {
-    name: '代办',
-    id: 4,
-    color: 'rgb(3, 189, 97)',
-    img: '/src/assets/icons/home-page/weizhi_1.png.svg'
-  },
-
-  { name: '其他', id: 5, img: '/src/assets/icons/home-page/qita.png.svg' }
-]
 // 通过属性查找
 const findByProp = (item: TaskList, key: keyof ChooseList) =>
   chooseList.find((el) => el.id == item.categoryId)?.[key]
@@ -159,11 +141,27 @@ getAllTaskInfo()
 
 const toAddTask = (id: number) => {
   store.categoryChose = id
-  router.push({ name: 'addTask' })
+  router.push({ name: 'addTask', params: { categoryId: id } })
 }
 
 const toTaskInfo = (taskId: number) => {
   router.push({ name: 'taskInfo', params: { taskId } })
+}
+
+const loading = ref(false)
+const onRefresh = () => {
+  setTimeout(() => {
+    loading.value = false
+    router.go(0)
+  }, 1000)
+}
+// 搜索
+const onSearch = async () => {
+  const data = await axiosGet(
+    axiosConfig.rootUrl + axiosConfig.searchTask + '?taskName=' + search.value
+  )
+  chosedTaskList.value = data.data.data
+  store.categoryChose = -1
 }
 </script>
 
@@ -179,6 +177,7 @@ const toTaskInfo = (taskId: number) => {
 .search {
   position: fixed;
   width: 100vw;
+  opacity: 0.9;
   top: 10px;
   & > * {
     background: #ffffff00;
@@ -188,8 +187,11 @@ const toTaskInfo = (taskId: number) => {
 // 搜索按钮
 :deep(.van-search__action) {
   background-color: rgb(64, 169, 255);
+  width: 40px;
   border-radius: 15px;
   color: rgb(255, 255, 255);
+  transform: translate(-24px);
+  text-align: center;
 }
 
 // 分类
@@ -277,6 +279,11 @@ const toTaskInfo = (taskId: number) => {
     font-weight: 400;
     line-height: 22px;
   }
+}
+
+.img {
+  width: 70px;
+  border-radius: 10px;
 }
 
 // 任务预览

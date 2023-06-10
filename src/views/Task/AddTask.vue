@@ -4,7 +4,7 @@
       <div class="main-box">
         <!-- 头部 -->
         <div>
-          <TaskHeader :title="'帮帮·发布'" />
+          <TaskHeader :title="'帮帮·发布'" :back-page="'home'" />
           <div class="prompt">
             <div>
               <van-icon name="volume-o" />
@@ -15,7 +15,7 @@
         <!-- tab切换 -->
         <header>
           <div
-            v-for="item in chooseList"
+            v-for="item in chooseList.slice(1, chooseList.length)"
             :class="{ chose: store.categoryChose == item.id }"
             :key="item.id"
             @click="chooseCategory(item.id)"
@@ -121,10 +121,19 @@ import TheInput from '@/components/info/TheInput.vue'
 import TheTextarea from '@/components/info/TheTextarea.vue'
 import TaskFooter from '@/components/task/TaskFooter.vue'
 import TaskHeader from '@/components/task/TaskHeader.vue'
+import router from '@/router'
 import { useStore } from '@/stores'
+import { chooseList } from '@/util/category'
 import { watch } from 'vue'
 import { computed } from 'vue'
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const store = useStore()
+
+const categoryId = route.params.categoryId as unknown as number
+store.categoryChose = categoryId
 
 const afterRead = (file: any) => {
   // 此时可以自行将文件上传至服务器
@@ -132,16 +141,10 @@ const afterRead = (file: any) => {
 }
 
 const fileList = ref([])
-const store = useStore()
-
-const chooseList = [
-  { name: '外卖', id: 1, color: 'rgb(255, 182, 149)' },
-  { name: '代取', id: 2, color: 'rgb(69, 133, 245)' },
-  { name: '代办', id: 4, color: 'rgb(3, 189, 97)' }
-]
 
 const chooseCategory = async (key: number) => {
   store.categoryChose = key
+  router.push({ name: 'addTask', params: { categoryId: key } })
 }
 
 const cost = ref({
@@ -173,6 +176,7 @@ const createTask = async () => {
   const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.createTask, info.value)
   console.log(data.data)
   console.log(info.value)
+  router.push({ name: 'home' })
 }
 </script>
 
@@ -216,7 +220,7 @@ header {
 
     span {
       @include text(rgb(255, 255, 255), 14px, 600);
-      letter-spacing: 22px;
+      // letter-spacing: 22px;
     }
   }
 }
@@ -226,7 +230,7 @@ header {
   font-family: Alibaba-PuHuiTi;
   font-size: 24px;
   font-weight: 600;
-  letter-spacing: 22px;
+  // letter-spacing: 22px;
 }
 
 .chose {

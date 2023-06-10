@@ -14,5 +14,9 @@ export const axiosConfig = {
   indexTaskTopN: '/index/data/topN',
   taskScreen: '/task/screen',
   createTask: '/task/create',
-  getTaskInfo: '/task/taskInfo'
+  getTaskInfo: '/task/taskInfo',
+  // 接单
+  acceptCreate: '/accept/create',
+  // 搜索
+  searchTask: '/task/search'
 }

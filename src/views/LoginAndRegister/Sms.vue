@@ -1,6 +1,6 @@
 <template>
   <div class="outtest-box flex-direction-col">
-    <Back :color="'black'" />
+    <Back :color="'black'" :back-page="'login'" />
 
     <div class="page-title">
       <span>输入验证码</span>

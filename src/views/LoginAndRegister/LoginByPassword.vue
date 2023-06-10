@@ -1,15 +1,10 @@
 <template>
   <div class="outtest-box flex-direction-col">
-    <Back :color="'black'" />
+    <Back :color="'black'" :back-page="'login'" />
 
     <div class="page-title">
       <span>亲，欢迎登录！</span>
     </div>
-
-    <!-- <div class="prompt">
-      <span>没有帮帮账号？ </span>
-      <RouterLink :to="{ name: 'register' }">立即注册</RouterLink>
-    </div> -->
 
     <van-form @submit="">
       <van-cell-group inset>

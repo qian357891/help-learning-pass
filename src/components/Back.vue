@@ -12,17 +12,18 @@
 
 <script setup lang="ts">
 import router from '@/router'
-
 const back = () => {
-  router.back()
+  router.push({ name: props.backPage })
 }
 
 interface Props {
   color?: string
+  backPage: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  color: 'rgb(255, 255, 255)'
+  color: 'rgb(255, 255, 255)',
+  backPage: ''
 })
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="outtest-box flex-direction-col">
-    <Back :color="'black'" />
+    <Back :color="'black'" :back-page="'home'" />
 
     <div class="page-title">
       <span>短信验证码登录</span>

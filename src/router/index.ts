@@ -36,7 +36,7 @@ const router = createRouter({
       component: Sms
     },
     {
-      path: '/add-task',
+      path: '/add-task/:categoryId',
       name: 'addTask',
       component: AddTask
     },
