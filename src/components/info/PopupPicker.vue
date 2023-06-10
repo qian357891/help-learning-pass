@@ -25,17 +25,37 @@
 </template>
 
 <script setup lang="ts">
+import { useStore } from '@/stores'
+import { watch, watchEffect } from 'vue'
 import { computed } from 'vue'
 import { ref } from 'vue'
 
 const props = defineProps(['color'])
+const store = useStore()
 
 const showBottom = ref(false)
 const showPopup = () => {
   showBottom.value = true
 }
-const currentDate = ref(['2023', '06', '15'])
-const currentTime = ref(['12', '00'])
+
+const date = new Date() as any
+// 转换
+const computedDate = (key: keyof Date, value: number = 0) => {
+  return computed(() => {
+    if (date[key]() + value >= 10) {
+      return '' + (date[key]() + value)
+    }
+    return '0' + (date[key]() + value)
+  })
+}
+
+const thisMonth = computedDate('getMonth', 1)
+const thisDay = computedDate('getDate')
+const currentDate = ref(['' + date.getFullYear(), thisMonth.value, thisDay.value])
+
+const thisHours = computedDate('getHours', 1)
+const thisMinutes = computedDate('getMinutes', 1)
+const currentTime = ref([thisHours.value, thisMinutes.value])
 
 const onConfirm = () => {
   showBottom.value = false
@@ -46,11 +66,14 @@ const onCancel = () => {
 }
 
 const minDate = ref(new Date(Date.now()))
-const maxDate = new Date(2025, 11, 30)
+const maxDate = new Date(date.getFullYear(), +thisMonth.value, 30)
 
 const selectDate = computed(
   () => `${currentDate.value.join('-')} ${currentTime.value.join(':')}:00`
 )
+watchEffect(() => {
+  store.taskExpirationTime = selectDate.value
+})
 </script>
 
 <style scoped lang="scss"></style>

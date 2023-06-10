@@ -164,12 +164,16 @@ const info = ref({
   taskInfo: '',
   taskPrice: 0,
   originalPrice: 0,
-  expirationTime: '2023-06-29 15:40:00'
+  expirationTime: store.taskExpirationTime
 })
 
 watch(cost.value, () => {
   info.value.taskPrice = computed(() => +cost.value.reward).value
   info.value.originalPrice = computed(() => +cost.value.getCost).value
+})
+
+watch(store, () => {
+  info.value.expirationTime = store.taskExpirationTime
 })
 
 const createTask = async () => {

@@ -25,7 +25,12 @@ const chooseList = [
     img: '/src/assets/icons/home-page/weizhi_1.png.svg'
   },
 
-  { name: '其他', id: 5, img: '/src/assets/icons/home-page/qita.png.svg' }
+  {
+    name: '其他',
+    id: 5,
+    color: 'rgb(255, 216, 212);',
+    img: '/src/assets/icons/home-page/qita.png.svg'
+  }
 ]
 
 export { chooseList }

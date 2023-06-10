@@ -15,20 +15,22 @@
           :key="postPreInfo.id"
         >
           <div>
-            <div>
-              <img src="@/assets/img/task-page/default-img.png" class="avatar" alt="" />
+            <div @click="toPostInfo">
               <div>
-                <span>{{ postPreInfo.userName }}</span>
+                <img src="@/assets/img/task-page/default-img.png" class="avatar" alt="" />
+                <div>
+                  <span>{{ postPreInfo.userName }}</span>
+                </div>
               </div>
-            </div>
-            <div>
-              <span>{{ postPreInfo.title }}</span>
-            </div>
-            <div>
-              <span>{{ postPreInfo.content }}</span>
-            </div>
-            <div>
-              <img src="@/assets/img/task-page/default-img.png" class="img" alt="" />
+              <div>
+                <span>{{ postPreInfo.title }}</span>
+              </div>
+              <div>
+                <span>{{ postPreInfo.content }}</span>
+              </div>
+              <div>
+                <img src="@/assets/img/task-page/default-img.png" class="img" alt="" />
+              </div>
             </div>
             <!-- 点赞，评论,关注 -->
             <div class="postStatus">
@@ -60,12 +62,17 @@ import { axiosGet } from '@/axios/api'
 import { axiosConfig } from '@/axios/axios.config'
 import FooterNav from '@/components/nav/FooterNav.vue'
 import { type PostPreInfo } from '@/axios/types/Post'
+import router from '@/router'
 
 const postPreInfoList: Array<PostPreInfo> = (
   await axiosGet(axiosConfig.rootUrl + axiosConfig.getPostList)
 ).data.postingInfos
 
 console.log(postPreInfoList)
+
+const toPostInfo = () => {
+  router.push({ name: 'postInfo', params: {} })
+}
 </script>
 
 <style scoped lang="scss">
@@ -101,7 +108,7 @@ main {
     color: rgb(0, 0, 0) !important;
   }
 
-  & > div > div {
+  & > div > div > div {
     &:first-child {
       display: flex;
     }
