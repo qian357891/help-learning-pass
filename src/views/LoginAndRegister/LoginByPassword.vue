@@ -72,6 +72,9 @@ const getkeyHex = async () => {
 const login = async () => {
   if (reg_tel.test(phoneNumber.value)) {
     store.phone = phoneNumber.value
+    // 存储用户数据
+    const userData = await axiosPost(axiosConfig.rootUrl + axiosConfig.getUserInfo, {})
+    store.userInfo = userData.data.userInfo
   } else {
     return
   }

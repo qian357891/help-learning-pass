@@ -63,7 +63,9 @@ const login = async () => {
     return
   }
   store.token = await data.data.token
-  console.log(data)
+  // 存储用户数据
+  const userData = await axiosPost(axiosConfig.rootUrl + axiosConfig.getUserInfo, {})
+  store.userInfo = userData.data.userInfo
 }
 
 watch(sms, async () => {

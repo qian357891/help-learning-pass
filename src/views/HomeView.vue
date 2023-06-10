@@ -38,7 +38,12 @@
 
       <!-- 主内容 -->
       <div class="task-review-box" style="margin: 20px 0">
-        <div v-for="(item, id) in chosedTaskList" :key="id" class="task-review">
+        <div
+          v-for="item in chosedTaskList"
+          :key="item.id"
+          class="task-review"
+          @click="toTaskInfo(item.id)"
+        >
           <div>
             <img src="../assets/img/task-page/default-img.png" alt="" />
           </div>
@@ -63,14 +68,7 @@
       </div>
     </div>
     <!-- 底部导航 -->
-    <div style="height: 50px"></div>
-    <div class="footer-nav">
-      <van-tabbar v-model="active">
-        <van-tabbar-item icon="home-o">首页</van-tabbar-item>
-        <van-tabbar-item icon="search" dot>社区</van-tabbar-item>
-        <van-tabbar-item icon="friends-o" badge="5" @click="toMe">个人</van-tabbar-item>
-      </van-tabbar>
-    </div>
+    <footer-nav />
 
     <van-back-top
       bottom="10vh"
@@ -92,15 +90,10 @@ import router from '@/router'
 import { useStore } from '@/stores'
 import { ref, type Ref } from 'vue'
 import { type TaskList } from '../axios/types/Task'
+import FooterNav from '@/components/nav/FooterNav.vue'
 
 const store = useStore()
-
-const active = ref(0)
 const search = ref('')
-
-const toMe = () => {
-  router.push({ name: 'login' })
-}
 
 interface ChooseList {
   name: string
@@ -167,6 +160,10 @@ getAllTaskInfo()
 const toAddTask = (id: number) => {
   store.categoryChose = id
   router.push({ name: 'addTask' })
+}
+
+const toTaskInfo = (taskId: number) => {
+  router.push({ name: 'taskInfo', params: { taskId } })
 }
 </script>
 
@@ -351,10 +348,5 @@ const toAddTask = (id: number) => {
     font-weight: 400;
     line-height: 22px;
   }
-}
-
-// 底部导航
-.footer-nav {
-  background: rgb(255, 255, 255);
 }
 </style>

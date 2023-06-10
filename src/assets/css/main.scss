@@ -40,3 +40,55 @@
     margin-right: 0 !important;
   }
 }
+// 渐变背景盒子
+.wrap {
+  padding-bottom: 60px;
+  background: linear-gradient(
+    180deg,
+    rgba(64, 157, 245, 0.54) 24.931%,
+    hsla(0, 0%, 77%, 0.2) 54.697%
+  );
+}
+
+.main-box {
+  margin: 0 12px;
+}
+
+// 任务板块内容与盒子
+.content-box {
+  padding: 26px 13px 12px 13px;
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 4px 4px rgba(217, 217, 217, 0.25);
+  border-radius: 10px;
+}
+
+// 任务详细
+.task-info {
+  color: rgb(0, 0, 0);
+  span:last-child {
+    color: rgb(133, 135, 136);
+  }
+
+  font-family: Alibaba-PuHuiTi;
+  font-size: 14px;
+  font-weight: 400;
+
+  & > div {
+    display: flex;
+    justify-content: space-between;
+    &:nth-child(n + 2) {
+      margin-top: 11px;
+    }
+  }
+  & > div:last-child {
+    @include flex-col();
+    & > span:first-child::after {
+      content: '*';
+      color: rgba(224, 0, 0, 0.6);
+    }
+    & > span:last-child {
+      @include text(rgb(133, 135, 136), 10px, 400);
+      opacity: 0.6;
+    }
+  }
+}

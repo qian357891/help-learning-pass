@@ -1,18 +1,18 @@
 export const axiosConfig = {
   // rootUrl: 'http://localhost:8081',
   rootUrl: 'http://xxl.vip.aeert.com',
+  // 用户
   sendCode: '/user/sendMessage',
   loginAndRegister: '/user/loginAndRegister',
   loginByPassword: '/user/login',
   getKey: '/user/getKey',
   logout: '/user/logout',
   alterUser: '/user/alterUser',
+  getUserInfo: '/user/getUserInfo',
+  // 任务
   uploadImg: '/img/task/upload',
-  taskScreen: '/task/screen',
   indexTaskTopN: '/index/data/topN',
-  getUserInfo: '/user/getUserInfo'
+  taskScreen: '/task/screen',
+  createTask: '/task/create',
+  getTaskInfo: '/task/taskInfo'
 }
-
-// export const axiosConfig = {
-//   rootUrl: '',
-// }

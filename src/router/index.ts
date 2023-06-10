@@ -4,6 +4,7 @@ import Login from '@/views/LoginAndRegister/Login.vue'
 import LoginByPassword from '@/views/LoginAndRegister/LoginByPassword.vue'
 import Sms from '@/views/LoginAndRegister/Sms.vue'
 import AddTask from '@/views/Task/AddTask.vue'
+import TaskInfo from '@/views/Task/TaskInfo.vue'
 // import RegisterVue from '@/views/abandoned/Register.vue'
 
 const router = createRouter({
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/add-task',
       name: 'addTask',
       component: AddTask
+    },
+    {
+      path: '/task-info/:taskId',
+      name: 'taskInfo',
+      component: TaskInfo
     }
   ]
 })

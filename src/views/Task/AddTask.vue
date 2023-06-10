@@ -2,13 +2,9 @@
   <div>
     <div class="wrap">
       <div class="main-box">
-        <!-- 帮帮·发布  -->
+        <!-- 头部 -->
         <div>
-          <div class="title">
-            <Back />
-            <span>帮帮·发布</span>
-          </div>
-
+          <TaskHeader :title="'帮帮·发布'" />
           <div class="prompt">
             <div>
               <van-icon name="volume-o" />
@@ -35,24 +31,21 @@
           <div>
             <span>任务名</span>
             <TheInput v-model:value="info.taskName" />
-            <!-- <span>重庆邮电大学移通学院C区 </span> -->
           </div>
 
           <div>
             <span>取货地点</span>
             <TheInput v-model:value="info.fromPlace" />
-            <!-- <span>重庆邮电大学移通学院C区 </span> -->
           </div>
 
           <div>
             <span>收货地点</span>
             <TheInput v-model:value="info.toPlace" />
-            <!-- <span>重庆邮电大学移通学院C区 </span> -->
           </div>
 
           <div>
             <span>联系人</span>
-            <span>{{ userInfo?.username }} {{ userInfo?.phone }}</span>
+            <span>{{ store.userInfo.username }} {{ store.userInfo.phone }}</span>
           </div>
 
           <div>
@@ -87,39 +80,35 @@
           <div>
             <span>代取费用</span>
             <TheInput v-model:value="cost.getCost" />
-            <!-- <span></span> -->
           </div>
 
           <div>
             <span>任务赏金</span>
             <TheInput v-model:value="cost.reward" />
-            <!-- <span></span> -->
           </div>
 
+          <!-- <div>
+            <span>计费说明</span>
+          </div> -->
+          <van-divider />
+
           <div>
-            <span>任务说明</span>
-            <span></span>
+            <span>小计￥{{ +cost.getCost + +cost.reward }}</span>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 费用总和 -->
-    <div style="height: 69px"></div>
     <footer>
-      <div>
-        <div>
-          <span>合计</span>
-          <span>￥{{ +cost.getCost + +cost.reward }}</span>
-        </div>
-        <div>
-          <span>发布后将有5分钟的冻结时间，冻结时间结束后可以取消发布</span>
-        </div>
-      </div>
-
-      <div>
-        <van-button round color="rgb(64, 169, 255)" @click="demo">立即发布</van-button>
-      </div>
+      <TaskFooter
+        :get-cost="cost.getCost"
+        :reward="cost.reward"
+        :on-click="createTask"
+        :buttonText="'立即发布'"
+      >
+        发布后将有5分钟的冻结时间，冻结时间结束后可以取消发布
+      </TaskFooter>
     </footer>
   </div>
 </template>
@@ -127,14 +116,15 @@
 <script setup lang="ts">
 import { axiosPost } from '@/axios/api'
 import { axiosConfig } from '@/axios/axios.config'
-import Back from '@/components/Back.vue'
 import PopupPicker from '@/components/info/PopupPicker.vue'
 import TheInput from '@/components/info/TheInput.vue'
 import TheTextarea from '@/components/info/TheTextarea.vue'
+import TaskFooter from '@/components/task/TaskFooter.vue'
+import TaskHeader from '@/components/task/TaskHeader.vue'
 import { useStore } from '@/stores'
-import type { UserInfo } from '@/axios/types/UserInfo'
+import { watch } from 'vue'
+import { computed } from 'vue'
 import { ref } from 'vue'
-import type { Ref } from 'vue'
 
 const afterRead = (file: any) => {
   // 此时可以自行将文件上传至服务器
@@ -154,75 +144,39 @@ const chooseCategory = async (key: number) => {
   store.categoryChose = key
 }
 
-// 取得用户数据
-const userInfo: Ref<UserInfo | undefined> = ref()
-
-;(async () => {
-  const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.getUserInfo, {})
-  userInfo.value = data.data.userInfo
-})()
-
 const cost = ref({
   getCost: '0',
   reward: '0'
 })
-const show = ref(false)
+
 // 详细数据
 const info = ref({
   categoryId: store.categoryChose,
   taskName: '',
   fromPlace: '',
   toPlace: '',
-  contactWay: userInfo.value?.phone,
-  userId: userInfo.value?.id,
+  contactType: 'phone',
+  contactWay: store.userInfo.phone,
+  userId: store.userInfo.id,
   taskInfo: '',
-  taskPrice: +cost.value.getCost + +cost.value.reward,
-  expirationTime: ''
+  taskPrice: 0,
+  originalPrice: 0,
+  expirationTime: '2023-06-29 15:40:00'
 })
 
-const demo = () => {
+watch(cost.value, () => {
+  info.value.taskPrice = computed(() => +cost.value.reward).value
+  info.value.originalPrice = computed(() => +cost.value.getCost).value
+})
+
+const createTask = async () => {
+  const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.createTask, info.value)
+  console.log(data.data)
   console.log(info.value)
 }
 </script>
 
 <style scoped lang="scss">
-.wrap {
-  padding-bottom: 60px;
-  background: linear-gradient(
-    180deg,
-    rgba(64, 157, 245, 0.54) 24.931%,
-    hsla(0, 0%, 77%, 0.2) 54.697%
-  );
-}
-
-.main-box {
-  margin: 0 12px;
-}
-
-@mixin text($color, $font-size, $font-weight: 500) {
-  color: $color;
-  font-family: Alibaba-PuHuiTi;
-  font-size: $font-size;
-  font-weight: $font-weight;
-}
-
-.title {
-  /* 帮帮·发布 */
-  display: flex;
-  align-items: center;
-
-  @include text(rgb(255, 255, 255), 20px);
-  div {
-    width: 0px;
-  }
-
-  span {
-    text-align: center;
-    margin-top: 18px;
-    flex: auto;
-  }
-}
-
 .prompt {
   /* 矩形 8 */
   display: flex;
@@ -285,44 +239,6 @@ header {
   }
 }
 
-.content-box {
-  padding: 26px 13px 12px 13px;
-  background: rgb(255, 255, 255);
-  box-shadow: 0px 4px 4px rgba(217, 217, 217, 0.25);
-  border-radius: 10px;
-}
-
-// 任务详细
-.task-info {
-  color: rgb(0, 0, 0);
-  span:last-child {
-    color: rgb(133, 135, 136);
-  }
-
-  font-family: Alibaba-PuHuiTi;
-  font-size: 14px;
-  font-weight: 400;
-
-  & > div {
-    display: flex;
-    justify-content: space-between;
-    &:nth-child(n + 2) {
-      margin-top: 11px;
-    }
-  }
-  & > div:last-child {
-    @include flex-col();
-    & > span:first-child::after {
-      content: '*';
-      color: rgba(224, 0, 0, 0.6);
-    }
-    & > span:last-child {
-      @include text(rgb(133, 135, 136), 10px, 400);
-      opacity: 0.6;
-    }
-  }
-}
-
 .img-submit-prompt {
   display: flex;
   flex-direction: column;
@@ -335,25 +251,5 @@ header {
 .cost-info {
   padding-top: 19px;
   margin-top: 11px;
-}
-
-footer {
-  position: fixed;
-  width: 430px;
-  height: 69px;
-  bottom: 0px;
-
-  background: rgb(255, 255, 255);
-  box-shadow: 0px -2px 4px rgba(211, 211, 211, 0.2);
-
-  display: flex;
-  align-items: center;
-
-  & > div > div:last-child {
-    font-family: Noto Sans SC;
-    color: rgb(128, 128, 128);
-    font-size: 10px;
-    font-weight: 300;
-  }
 }
 </style>

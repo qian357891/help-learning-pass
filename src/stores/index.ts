@@ -1,5 +1,6 @@
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { defineStore } from 'pinia'
+import type { UserInfo } from '@/axios/types/UserInfo'
 
 export const useStore = defineStore(
   'store',
@@ -9,12 +10,24 @@ export const useStore = defineStore(
     const navActive = ref(0)
     const categoryChose = ref(0)
 
-    return { token, phone, navActive, categoryChose }
+    const userInfo: Ref<UserInfo> = ref({
+      balance: 0,
+      createTime: '',
+      encrPassword: '',
+      gender: 0,
+      id: 0,
+      operaTime: '',
+      phone: '',
+      schoolId: 0,
+      username: ''
+    })
+
+    return { token, phone, navActive, categoryChose, userInfo }
   },
   {
     persist: [
       {
-        paths: ['token'],
+        paths: ['token', 'userInfo'],
         storage: localStorage
       }
     ]
