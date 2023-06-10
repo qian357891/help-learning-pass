@@ -9,9 +9,9 @@
   flex-direction: column;
 }
 
-@mixin text($color, $font-size, $font-weight: 500) {
+@mixin text($color, $font-size, $font-weight: 500, $font-family: Alibaba-PuHuiTi) {
   color: $color;
-  font-family: Alibaba-PuHuiTi;
+  font-family: $font-family;
   font-size: $font-size;
   font-weight: $font-weight;
 }
