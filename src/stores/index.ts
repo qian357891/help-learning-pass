@@ -22,7 +22,9 @@ export const useStore = defineStore(
       username: ''
     })
 
-    return { token, phone, navActive, categoryChose, userInfo }
+    const activeNav = ref(0)
+
+    return { token, phone, navActive, categoryChose, userInfo, activeNav }
   },
   {
     persist: [

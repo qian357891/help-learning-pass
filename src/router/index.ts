@@ -5,6 +5,7 @@ import LoginByPassword from '@/views/LoginAndRegister/LoginByPassword.vue'
 import Sms from '@/views/LoginAndRegister/Sms.vue'
 import AddTask from '@/views/Task/AddTask.vue'
 import TaskInfo from '@/views/Task/TaskInfo.vue'
+import CommunityIndex from '@/views/community/CommunityIndex.vue'
 // import RegisterVue from '@/views/abandoned/Register.vue'
 
 const router = createRouter({
@@ -44,6 +45,12 @@ const router = createRouter({
       path: '/task-info/:taskId',
       name: 'taskInfo',
       component: TaskInfo
+    },
+    // 社区
+    {
+      path: '/community/index',
+      name: 'communityIndex',
+      component: CommunityIndex
     }
   ]
 })

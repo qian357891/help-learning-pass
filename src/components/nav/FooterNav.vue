@@ -3,10 +3,10 @@
     <!-- 底部导航 -->
     <div style="height: 50px"></div>
     <div class="footer-nav">
-      <van-tabbar v-model="active">
-        <van-tabbar-item icon="home-o">首页</van-tabbar-item>
-        <van-tabbar-item icon="search" dot>社区</van-tabbar-item>
-        <van-tabbar-item icon="friends-o" badge="5" @click="toMe">个人</van-tabbar-item>
+      <van-tabbar v-model="store.activeNav">
+        <van-tabbar-item icon="home-o" @click="pushPage('home')">首页</van-tabbar-item>
+        <van-tabbar-item icon="search" @click="pushPage('communityIndex')">社区</van-tabbar-item>
+        <van-tabbar-item icon="friends-o" @click="pushPage('login')">个人</van-tabbar-item>
       </van-tabbar>
     </div>
   </div>
@@ -14,11 +14,21 @@
 
 <script setup lang="ts">
 import router from '@/router'
-import { ref } from 'vue'
+import { useStore } from '@/stores'
 
-const active = ref(0)
-const toMe = () => {
-  router.push({ name: 'login' })
+const store = useStore()
+const routerName = router.currentRoute.value.name
+switch (routerName) {
+  case 'home':
+    store.activeNav = 0
+    break
+  case 'communityIndex':
+    store.activeNav = 1
+    break
+}
+
+const pushPage = (routerName: string) => {
+  router.push({ name: routerName })
 }
 </script>
 
