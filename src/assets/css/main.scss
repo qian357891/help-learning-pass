@@ -49,6 +49,10 @@
     hsla(0, 0%, 77%, 0.2) 54.697%
   );
 }
+//
+.box {
+  margin: 0 12px 0 12px;
+}
 
 .main-box {
   margin: 0 12px;
@@ -90,5 +94,38 @@
       @include text(rgb(133, 135, 136), 10px, 400);
       opacity: 0.6;
     }
+  }
+}
+
+// 盒子
+.the-box {
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 4px 4px rgba(217, 217, 217, 0.25);
+  border-radius: 10px;
+  padding: 12px;
+  @include text('', 14px, 400, Alibaba-PuHuiTi);
+}
+
+// 任务详情，帖子详情
+.post-main-content {
+  margin: 20px;
+  & > div {
+    display: flex;
+    & > *:nth-child(n + 2) {
+      margin-left: 10px;
+      @include text(rgb(0, 0, 0), 12px, 400, Noto Sans SC);
+    }
+  }
+  img {
+    width: 50px;
+    border-radius: 10px;
+  }
+  & > div:nth-child(2) {
+    margin-top: 12px;
+    @include text(rgb(0, 0, 0), 16px, 700, Noto Sans SC);
+  }
+  & > div:nth-child(3) {
+    margin-top: 20px;
+    @include text(rgb(0, 0, 0), 14px, 500);
   }
 }

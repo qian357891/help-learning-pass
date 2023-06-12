@@ -1,6 +1,7 @@
 export const axiosConfig = {
   // rootUrl: 'http://localhost:8081',
-  rootUrl: 'http://xxl.vip.aeert.com',
+  // rootUrl: 'http://xxl.vip.aeert.com',
+  rootUrl: 'http://47.109.83.157:8081',
   // 用户
   sendCode: '/user/sendMessage',
   loginAndRegister: '/user/loginAndRegister',
@@ -22,10 +23,10 @@ export const axiosConfig = {
 
   //社区
   getPostList: '/community/list',
-  getCommunityInfo: '/community/getCommunityInfo',
+  getPostingDetailById: '/community/getPostingDetailById',
 
   // socekt
   socketUserId: '/websocket',
-  // socketRoot: 'ws://47.109.83.157:8081'
-  socketRoot: 'ws://xxl.vip.aeert.com'
+  socketRoot: 'ws://47.109.83.157:8081'
+  // socketRoot: 'ws://xxl.vip.aeert.com'
 }

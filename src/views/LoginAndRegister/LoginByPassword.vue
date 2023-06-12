@@ -6,7 +6,7 @@
       <span>亲，欢迎登录！</span>
     </div>
 
-    <van-form @submit="">
+    <van-form>
       <van-cell-group inset>
         <van-field
           name="手机号"
@@ -87,7 +87,7 @@ const login = async () => {
     showFailToast('手机号或密码错误！')
   }
   if (store.token) {
-    router.push({ name: 'home' })
+    router.push({ name: 'userCenter' })
   }
   console.log(data)
 }

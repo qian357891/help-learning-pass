@@ -6,7 +6,7 @@
       <van-tabbar v-model="store.activeNav">
         <van-tabbar-item icon="home-o" @click="pushPage('home')">首页</van-tabbar-item>
         <van-tabbar-item icon="search" @click="pushPage('communityIndex')">社区</van-tabbar-item>
-        <van-tabbar-item icon="friends-o" @click="pushPage('login')">个人</van-tabbar-item>
+        <van-tabbar-item icon="friends-o" @click="pushPage('userCenter')">个人</van-tabbar-item>
       </van-tabbar>
     </div>
   </div>
@@ -24,6 +24,9 @@ switch (routerName) {
     break
   case 'communityIndex':
     store.activeNav = 1
+    break
+  case 'userCenter':
+    store.activeNav = 2
     break
 }
 

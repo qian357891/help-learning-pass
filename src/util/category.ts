@@ -28,7 +28,7 @@ const chooseList = [
   {
     name: '其他',
     id: 5,
-    color: 'rgb(255, 216, 212);',
+    color: 'rgb(255, 123, 187)',
     img: '/src/assets/icons/home-page/qita.png.svg'
   }
 ]

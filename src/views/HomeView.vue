@@ -66,7 +66,15 @@
               </header>
               <!--  -->
               <span>内容 | {{ item.taskInfo }}</span>
-              <span>任务接取时间：{{ item.expirationTime }}</span>
+              <span v-if="item.validSeconds >= 3600"
+                >任务截止时间：{{ processingTime(item.expirationTime) }}</span
+              >
+              <van-count-down
+                v-else
+                millisecond
+                :time="item.validSeconds * 1000"
+                format="仅剩时间：mm:ss:SS"
+              />
             </div>
             <div>
               <div>￥{{ item.taskPrice }}</div>
@@ -103,7 +111,6 @@ import { chooseList } from '@/util/category'
 
 const store = useStore()
 store.categoryChose = 0
-
 const search = ref('')
 
 interface ChooseList {
@@ -115,7 +122,6 @@ interface ChooseList {
 // 通过属性查找
 const findByProp = (item: TaskList, key: keyof ChooseList) =>
   chooseList.find((el) => el.id == item.categoryId)?.[key]
-
 const chosedTaskList: Ref<Array<TaskList>> = ref([])
 
 const chooseCategory = async (key: number) => {
@@ -124,26 +130,22 @@ const chooseCategory = async (key: number) => {
     getAllTaskInfo()
     return
   }
-
   const data = await axiosPost(axiosConfig.taskScreen, {
     categoryId: key
   })
   chosedTaskList.value = data.data.data
 }
-
 // 获取“全部”内容
 const getAllTaskInfo = async () => {
   const data = await axiosGet(axiosConfig.indexTaskTopN)
   chosedTaskList.value = data.data.taskTopn
 }
-
 getAllTaskInfo()
 
 const toAddTask = (id: number) => {
   store.categoryChose = id
   router.push({ name: 'addTask', params: { categoryId: id } })
 }
-
 const toTaskInfo = (taskId: number) => {
   router.push({ name: 'taskInfo', params: { taskId } })
 }
@@ -163,6 +165,9 @@ const onSearch = async () => {
   chosedTaskList.value = data.data.data
   store.categoryChose = -1
 }
+// 处理截止时间字符串
+const processingTime = (originalTime: string) =>
+  originalTime.slice(5, originalTime.length - 3).replace('-', '/')
 </script>
 
 <style scoped lang="scss">
@@ -170,7 +175,6 @@ const onSearch = async () => {
   background: rgb(244, 245, 247);
 }
 .hero {
-  // position: absolute;
   max-width: fit-content;
   width: 100vw;
 }
@@ -183,7 +187,6 @@ const onSearch = async () => {
     background: #ffffff00;
   }
 }
-
 // 搜索按钮
 :deep(.van-search__action) {
   background-color: rgb(64, 169, 255);
@@ -193,20 +196,16 @@ const onSearch = async () => {
   transform: translate(-24px);
   text-align: center;
 }
-
 // 分类
 .classify {
   position: absolute;
   width: 390px;
-  height: 69px;
   top: 180px;
   left: 50%;
   transform: translate(-50%);
   box-sizing: border-box;
-
   background: rgb(255, 255, 255);
   box-shadow: 0px 4px 4px rgba(217, 217, 217, 0.25);
-
   border-radius: 10px;
 }
 
@@ -234,14 +233,10 @@ const onSearch = async () => {
 }
 // 任务列表
 .list {
-  // width: 407px;
-  // box-sizing: border-box;
   margin: 30px 12px 12px 12px;
-
   background: rgb(255, 255, 255);
   border: 3px solid rgb(255, 255, 255);
   box-shadow: 0px 4px 4px rgba(217, 217, 217, 0.25);
-
   border-radius: 10px;
 }
 // 已选中类别
@@ -255,28 +250,19 @@ const onSearch = async () => {
 // 选择类别
 .choose {
   margin-top: 12px;
-
   span:first-of-type {
     /* 任务中心 */
-    color: rgb(0, 0, 0);
-    font-family: YouSheBiaoTiHei;
-    font-size: 18px;
-    font-weight: 400;
+    @include text(rgb(0, 0, 0), 18px, 400, YouSheBiaoTiHei);
     line-height: 23px;
   }
-
   span:nth-child(n + 3)::before {
     content: '/';
     margin-right: 5px;
     color: rgb(201, 205, 212);
   }
-
   span {
     margin-left: 7px;
-    color: rgb(78, 89, 105);
-    font-family: Noto Sans;
-    font-size: 10px;
-    font-weight: 400;
+    @include text(rgb(78, 89, 105), 10px, 400, Noto Sans);
     line-height: 22px;
   }
 }
@@ -296,24 +282,19 @@ const onSearch = async () => {
   & > div {
     margin-left: 10px;
   }
-
   &:nth-child(n + 2) {
     margin-top: 17px;
   }
-
   & > div:last-child {
     margin-left: auto;
     padding-right: 15px;
     display: flex;
     flex-direction: column-reverse;
+    justify-content: space-between;
     /* ￥16.5 */
-    color: rgb(255, 110, 80);
-    font-family: Noto Sans SC;
-    font-size: 14px;
-    font-weight: 500;
+    @include text(rgb(255, 110, 80), 14px, 500, Noto Sans SC);
     line-height: 22px;
     letter-spacing: -1px;
-    text-align: left;
   }
 }
 
@@ -321,16 +302,18 @@ const onSearch = async () => {
 .task-review-content {
   display: flex;
   flex-direction: column;
-
   & > span {
     /* 内容 | 雷永江代言的那家，一两不加腐竹。 */
-    color: rgb(84, 84, 84);
-    font-family: Noto Sans SC;
-    font-size: 12px;
-    font-weight: 400;
+    @include text(rgb(84, 84, 84), 12px, 400, Noto Sans SC);
     line-height: 22px;
   }
 }
+// 秒杀时间
+:deep(.van-count-down) {
+  @include text(rgb(216, 0, 0), 12px, 400, Noto Sans SC);
+  line-height: 22px;
+}
+
 // 任务标题
 .task-review-title {
   display: flex;
@@ -343,11 +326,11 @@ const onSearch = async () => {
 .task-review-title > div:first-child {
   width: 30px;
   height: 20px;
-  background: rgb(255, 182, 149);
+  // background: rgb(255, 182, 149);
+  background: rgb(255, 123, 187);
   border-radius: 2px;
   display: inline-block;
   text-align: center;
-
   span:first-child {
     color: rgba(255, 255, 255, 0.9);
     font-family: ZhenyanGB;

@@ -63,12 +63,16 @@ import { axiosConfig } from '@/axios/axios.config'
 import FooterNav from '@/components/nav/FooterNav.vue'
 import { type PostPreInfo } from '@/axios/types/Post'
 import router from '@/router'
+import { ref, type Ref } from 'vue'
 
-const postPreInfoList: Array<PostPreInfo> = (
-  await axiosGet(axiosConfig.rootUrl + axiosConfig.getPostList)
-).data.postingInfos
+const postPreInfoList: Ref<Array<PostPreInfo>> = ref([])
 
-console.log(postPreInfoList)
+const getPostList = async () => {
+  const data = await axiosGet(axiosConfig.rootUrl + axiosConfig.getPostList)
+  postPreInfoList.value = data.data.postingInfoPos
+  console.log(data)
+}
+getPostList()
 
 const toPostInfo = (id: number) => {
   router.push({ name: 'postInfo', params: { communityId: id } })
@@ -81,7 +85,7 @@ const toPostInfo = (id: number) => {
 }
 
 header {
-  margin: 10px 0 20px 0;
+  padding: 10px 0 20px 0;
   @include flex-center();
   & > div {
     margin-left: 23px;

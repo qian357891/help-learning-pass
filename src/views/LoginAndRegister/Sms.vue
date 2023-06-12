@@ -72,7 +72,7 @@ watch(sms, async () => {
   if (sms.value.length === 4) {
     await login()
     if (store.token) {
-      router.push({ name: 'home' })
+      router.push({ name: 'userCenter' })
     }
   }
 })

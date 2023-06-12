@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { useStore } from '@/stores'
-import { watch, watchEffect } from 'vue'
+import { watchEffect } from 'vue'
 import { computed } from 'vue'
 import { ref } from 'vue'
 
@@ -66,6 +66,8 @@ const onCancel = () => {
 }
 
 const minDate = ref(new Date(Date.now()))
+// 一个月的最后几天，3天可能会变成下一个月
+
 const maxDate = new Date(date.getFullYear(), +thisMonth.value, 30)
 
 const selectDate = computed(

@@ -4,34 +4,49 @@
       <header>
         <TaskHeader :title="'任务详细'" :back-page="'home'" />
       </header>
-      <main class="content-box task-info" style="margin-top: 37px">
+      <div class="content-box task-info" style="margin-top: 20px">
         <div class="category" :style="{ color: chose?.color }">
           <p>{{ chose?.name }}</p>
         </div>
+
+        <main class="post-main-content">
+          <!-- 头 -->
+          <div>
+            <div>
+              <img src="@/assets/img/task-page/default-img.png" alt="" />
+            </div>
+            <div>
+              <span>{{ taskInfo.userId }}</span>
+            </div>
+          </div>
+          <!-- 任务详细 -->
+          <div>
+            <span>{{ taskInfo.taskName }}</span>
+          </div>
+          <div>
+            <span>{{ taskInfo.taskInfo }}</span>
+          </div>
+        </main>
+
         <div class="img">
           <img src="/src/assets/img/task-page/default-img.png" :alt="taskInfo.taskName" />
         </div>
-
-        <div class="container">
-          <div>
-            <span>{{ taskInfo.taskName }}</span>
-            <van-divider />
-            <span>{{ taskInfo.taskInfo }}</span>
-          </div>
-        </div>
-
+      </div>
+      <!-- 任务的属性 -->
+      <div class="content-box task-info" style="margin-top: 10px">
         <div>
           <span>取货地点</span>
           <span>{{ taskInfo.fromPlace }}</span>
         </div>
-
         <div>
           <span>收货地点</span>
           <span>{{ taskInfo.toPlace }}</span>
         </div>
         <div>
           <span>任务截止时间</span>
-          <span style="color: rgba(8, 131, 217, 0.68)">{{ taskInfo.expirationTime }}</span>
+          <span style="color: rgba(8, 131, 217, 0.68)">{{
+            processingTime(taskInfo.expirationTime)
+          }}</span>
         </div>
         <van-divider />
         <div>
@@ -42,7 +57,11 @@
           <span>任务赏金</span>
           <span>{{ taskInfo.taskPrice }}</span>
         </div>
-      </main>
+        <van-divider />
+        <div style="text-align: center">
+          <span>接取任务后可查看任务发布者联系方式</span>
+        </div>
+      </div>
     </div>
     <footer>
       <TaskFooter
@@ -84,24 +103,20 @@ const receiveTask = async () => {
 }
 
 const chose = chooseList.find((el) => el.id == taskInfo.categoryId)
+
+// 处理截止时间字符串
+const processingTime = (originalTime: string) =>
+  originalTime.slice(5, originalTime.length - 3).replace('-', '/')
 </script>
 
 <style scoped lang="scss">
-.container {
-  display: flex;
-  flex-direction: column;
-
-  padding: 15px;
-  background: rgb(249, 249, 249);
-  border-radius: 10px;
-  span:first-child {
-    font-size: 18px;
-  }
-  span {
-    color: black;
-  }
+.post-main-content {
+  margin: 15px 0 0 0;
 }
 
+.content-box {
+  padding-top: 15px;
+}
 .category {
   justify-content: center;
   @include text('', $font-size: 24px, $font-weight: 600);
@@ -112,9 +127,20 @@ const chose = chooseList.find((el) => el.id == taskInfo.categoryId)
   }
 }
 
+.task-info {
+  span:last-child {
+    color: rgb(0, 0, 0);
+  }
+}
+
 .img {
-  height: 140px;
-  justify-content: center;
+  height: 225px;
   margin: 12px 0 25px 0 !important;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
 }
 </style>

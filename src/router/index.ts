@@ -7,6 +7,7 @@ import AddTask from '@/views/Task/AddTask.vue'
 import TaskInfo from '@/views/Task/TaskInfo.vue'
 import CommunityIndex from '@/views/community/CommunityIndex.vue'
 import PostInfo from '@/views/community/PostInfo.vue'
+import UserCenterIndex from '@/views/user-center/UserCenterIndex.vue'
 // import RegisterVue from '@/views/abandoned/Register.vue'
 
 const router = createRouter({
@@ -57,6 +58,12 @@ const router = createRouter({
       path: '/community/post-info/:communityId',
       name: 'postInfo',
       component: PostInfo
+    },
+    // 个人中心
+    {
+      path: '/user-center',
+      name: 'userCenter',
+      component: UserCenterIndex
     }
   ]
 })

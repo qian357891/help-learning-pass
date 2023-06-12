@@ -1,6 +1,7 @@
 interface TaskList {
   id: number
   taskPrice: number
+  originalPrice: number
   userId: number
   categoryId: number
   taskName: string
