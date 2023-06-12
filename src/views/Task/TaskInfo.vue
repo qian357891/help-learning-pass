@@ -16,7 +16,7 @@
               <img src="@/assets/img/task-page/default-img.png" alt="" />
             </div>
             <div>
-              <span>{{ taskInfo.userId }}</span>
+              <span>{{ taskInfo.userName }}</span>
             </div>
           </div>
           <!-- 任务详细 -->
@@ -102,7 +102,8 @@ const receiveTask = async () => {
   console.log(data)
 }
 
-const chose = chooseList.find((el) => el.id == taskInfo.categoryId)
+// const chose = chooseList.find((el) => el.id == taskInfo.categoryId)
+const chose = chooseList.find((el) => el.id == 1)
 
 // 处理截止时间字符串
 const processingTime = (originalTime: string) =>

@@ -34,7 +34,7 @@
           </div>
 
           <div>
-            <span>取货地点</span>
+            <span>取货地点/目的地</span>
             <TheInput v-model:value="info.fromPlace" />
           </div>
 

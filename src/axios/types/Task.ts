@@ -14,8 +14,9 @@ interface TaskList {
 interface TaskInfo {
   id: number
   userId: number
+  userName: string
+  headUrl?: any
   categoryId: number
-  statusId: number
   taskName: string
   fromPlace: string
   toPlace: string
@@ -23,13 +24,11 @@ interface TaskInfo {
   taskPrice: number
   originalPrice: number
   expirationTime: string
-  valid: number
   contactWay: string
   contactType: string
   imageUrls: any[]
   createTime: string
-  operaTime: string
-  statusName: string
+  viewCount: number
 }
 
 export { type TaskList, type TaskInfo }

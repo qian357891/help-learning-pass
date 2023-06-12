@@ -44,40 +44,49 @@
         </div>
 
         <!-- 主内容 -->
-        <div class="task-review-box" style="margin: 20px 0">
-          <div
-            v-for="item in chosedTaskList"
-            :key="item.id"
-            class="task-review"
-            @click="toTaskInfo(item.id)"
-          >
-            <div>
-              <img src="../assets/img/task-page/default-img.png" :alt="item.taskName" class="img" />
-            </div>
-            <div class="task-review-content">
-              <!-- 任务标题 -->
-              <header class="task-review-title">
-                <div :style="{ background: findByProp(item, 'color') }">
-                  <span> {{ findByProp(item, 'name') }} </span>
-                </div>
-                <div>
-                  <span>{{ item.taskName }}</span>
-                </div>
-              </header>
-              <!--  -->
-              <span>内容 | {{ item.taskInfo }}</span>
-              <span v-if="item.validSeconds >= 3600"
-                >任务截止时间：{{ processingTime(item.expirationTime) }}</span
-              >
-              <van-count-down
-                v-else
-                millisecond
-                :time="item.validSeconds * 1000"
-                format="仅剩时间：mm:ss:SS"
-              />
-            </div>
-            <div>
-              <div>￥{{ item.taskPrice }}</div>
+        <div v-if="chosedTaskList.length === 0">
+          <van-empty image="search" description="这里没有找到任何东西" />
+        </div>
+        <div v-else>
+          <div class="task-review-box" style="margin: 20px 0">
+            <div
+              v-for="item in chosedTaskList"
+              :key="item.id"
+              class="task-review"
+              @click="toTaskInfo(item.id)"
+            >
+              <div>
+                <img
+                  src="../assets/img/task-page/default-img.png"
+                  :alt="item.taskName"
+                  class="img"
+                />
+              </div>
+              <div class="task-review-content">
+                <!-- 任务标题 -->
+                <header class="task-review-title">
+                  <div :style="{ background: findByProp(item, 'color') }">
+                    <span> {{ findByProp(item, 'name') }} </span>
+                  </div>
+                  <div>
+                    <span>{{ item.taskName }}</span>
+                  </div>
+                </header>
+                <!--  -->
+                <span>内容 | {{ item.taskInfo }}</span>
+                <span v-if="item.validSeconds >= 3600"
+                  >任务截止时间：{{ processingTime(item.expirationTime) }}</span
+                >
+                <van-count-down
+                  v-else
+                  millisecond
+                  :time="item.validSeconds * 1000"
+                  format="仅剩时间：mm:ss:SS"
+                />
+              </div>
+              <div>
+                <div>￥{{ item.taskPrice }}</div>
+              </div>
             </div>
           </div>
         </div>
