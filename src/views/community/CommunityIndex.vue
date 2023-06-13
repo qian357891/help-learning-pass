@@ -17,7 +17,7 @@
           <div>
             <div @click="toPostInfo(postPreInfo.id)">
               <div>
-                <img src="@/assets/img/task-page/default-img.png" class="avatar" alt="" />
+                <img :src="postPreInfo.headerUrl" class="avatar" alt="" />
                 <div>
                   <span>{{ postPreInfo.userName }}</span>
                 </div>
@@ -28,7 +28,7 @@
               <div>
                 <span>{{ postPreInfo.content }}</span>
               </div>
-              <div>
+              <div v-if="postPreInfo.imagesUrls">
                 <img src="@/assets/img/task-page/default-img.png" class="img" alt="" />
               </div>
             </div>
@@ -87,8 +87,9 @@ const toPostInfo = (id: number) => {
 header {
   padding: 10px 0 20px 0;
   @include flex-center();
+  justify-content: space-around;
+  margin: 0 100px;
   & > div {
-    margin-left: 23px;
     @include text(rgb(147, 147, 147), 16px, 400, Noto Sans SC);
   }
   .chose {
@@ -147,6 +148,16 @@ main {
 .postStatus {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin: 28px 24px 0 24px !important;
+  & > div {
+    display: flex;
+    align-items: center;
+  }
+  span {
+    margin-left: 5px;
+    font-family: Alibaba-PuHuiTi;
+    font-weight: 400;
+  }
 }
 </style>

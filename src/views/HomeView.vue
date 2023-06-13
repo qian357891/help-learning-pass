@@ -124,6 +124,7 @@ import { ref, type Ref } from 'vue'
 import { type TaskList } from '../axios/types/Task'
 import FooterNav from '@/components/nav/FooterNav.vue'
 import { chooseList } from '@/util/category'
+import { processingTime } from '@/util/operateStr'
 
 const store = useStore()
 store.categoryChose = 0
@@ -182,8 +183,8 @@ const onSearch = async () => {
   store.categoryChose = -1
 }
 // 处理截止时间字符串
-const processingTime = (originalTime: string) =>
-  originalTime.slice(5, originalTime.length - 3).replace('-', '/')
+// const processingTime = (originalTime: string) =>
+//   originalTime.slice(5, originalTime.length - 3).replace('-', '/')
 
 // 图片
 const images = [

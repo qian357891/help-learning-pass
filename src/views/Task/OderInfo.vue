@@ -93,6 +93,7 @@ import { chooseList } from '@/util/category'
 import { useStore } from '@/stores'
 import { ref, type Ref } from 'vue'
 import { showImagePreview } from 'vant'
+import { processingTime } from '@/util/operateStr'
 
 const store = useStore()
 const route = useRoute()
@@ -118,8 +119,8 @@ const receiveTask = async () => {
 const chose = chooseList.find((el) => el.id == taskInfo.value?.categoryId)
 
 // 处理截止时间字符串
-const processingTime = (originalTime: string) =>
-  originalTime.slice(5, originalTime.length - 3).replace('-', '/')
+// const processingTime = (originalTime: string) =>
+//   originalTime.slice(5, originalTime.length - 3).replace('-', '/')
 
 //图片预览
 const openImgs = (imageUrls: any) => {
