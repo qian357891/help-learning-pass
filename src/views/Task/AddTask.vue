@@ -57,7 +57,13 @@
             <span>上传图片</span>
             <div class="img-submit" style="display: flex; flex-direction: column; align-items: end">
               <div>
-                <van-uploader v-model="fileList" multiple :max-count="1" :after-read="afterRead" />
+                <van-uploader
+                  result-type="file"
+                  v-model="fileList"
+                  multiple
+                  :max-count="3"
+                  :after-read="afterRead"
+                />
               </div>
               <div class="img-submit-prompt">
                 <div>仅支持jpg、jpeg、png格式</div>
@@ -79,12 +85,12 @@
         <div class="cost-info task-info content-box">
           <div>
             <span>代取费用</span>
-            <TheInput v-model:value="cost.getCost" />
+            <TheInput v-model:value="cost.getCost" class="addMoney" />
           </div>
 
           <div>
             <span>任务赏金</span>
-            <TheInput v-model:value="cost.reward" />
+            <TheInput v-model:value="cost.reward" class="addMoney" />
           </div>
 
           <!-- <div>
@@ -126,7 +132,7 @@ import { useStore } from '@/stores'
 import { chooseList } from '@/util/category'
 import { watch } from 'vue'
 import { computed } from 'vue'
-import { ref } from 'vue'
+import { ref, toRaw } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -137,10 +143,16 @@ store.categoryChose = categoryId
 
 const afterRead = (file: any) => {
   // 此时可以自行将文件上传至服务器
-  console.log(file)
+  console.log(toRaw(file))
 }
 
+// 文件流
 const fileList = ref([])
+const _fileList_: any = ref([])
+watch(fileList, () => {
+  _fileList_.value = toRaw(fileList.value).map((item) => (toRaw(item) as any).file)
+  console.log(toRaw(_fileList_.value))
+})
 
 const chooseCategory = async (key: number) => {
   store.categoryChose = key
@@ -253,6 +265,12 @@ header {
   align-items: end;
   opacity: 0.63;
   @include text(rgb(133, 135, 136), 9px);
+}
+
+.addMoney {
+  &:deep(.van-field__body)::after {
+    content: '￥';
+  }
 }
 
 // 费用详细
