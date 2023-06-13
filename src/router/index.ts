@@ -65,7 +65,10 @@ const router = createRouter({
       name: 'userCenter',
       component: UserCenterIndex
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition): any {
+    return { x: 0, y: 0 }
+  }
 })
 
 export default router

@@ -19,7 +19,7 @@ export const useStore = defineStore(
       operaTime: '',
       phone: '',
       schoolId: 0,
-      username: ''
+      userName: ''
     })
 
     const activeNav = ref(0)

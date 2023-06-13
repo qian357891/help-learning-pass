@@ -45,7 +45,7 @@
 
           <div>
             <span>联系人</span>
-            <span>{{ store.userInfo.username }} {{ store.userInfo.phone }}</span>
+            <span>{{ store.userInfo.userName }} {{ store.userInfo.phone }}</span>
           </div>
 
           <div>

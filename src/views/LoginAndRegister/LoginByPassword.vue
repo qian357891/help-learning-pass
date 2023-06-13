@@ -95,13 +95,6 @@ const login = async () => {
   }
   console.log(data)
 }
-
-const logout = async () => {
-  const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.logout, {
-    phone: phoneNumber.value
-  })
-  console.log(data)
-}
 </script>
 
 <style scoped lang="scss">

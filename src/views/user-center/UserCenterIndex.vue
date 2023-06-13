@@ -2,12 +2,19 @@
   <div class="wrap">
     <header>
       <div>
-        <div @click="login">
+        <div v-if="store.token">
           <img src="@/assets/img/task-page/default-img.png" alt="" />
         </div>
-        <div class="header-text">
-          <span>测试用户1</span>
+        <div v-else @click="login">
+          <img src="@/assets/img/task-page/default-img.png" alt="" />
+        </div>
+        <div v-if="store.token" class="header-text">
+          <span>{{ store.userInfo.userName }}</span>
           <span>这是你使用帮帮的第1天</span>
+        </div>
+        <div v-else class="header-text">
+          <span>未登录</span>
+          <span>点击头像登录，发现新的世界！</span>
         </div>
       </div>
     </header>
@@ -31,8 +38,8 @@
               <span>收藏</span>
             </div>
             <div>
-              <van-icon name="star" size="35" color="rgb(147, 200, 251)" />
-              <span>收藏</span>
+              <van-icon name="more" size="35" color="rgb(147, 200, 251)" />
+              <span>更多</span>
             </div>
           </div>
         </div>
@@ -50,7 +57,11 @@
               </div>
               <div>
                 <van-icon name="todo-list" size="35" color="rgb(147, 200, 251)" />
-                <span>任务中心</span>
+                <span>任务</span>
+              </div>
+              <div>
+                <van-icon name="more" size="35" color="rgb(147, 200, 251)" />
+                <span>更多</span>
               </div>
             </div>
           </div>
@@ -62,7 +73,7 @@
           <van-cell title="隐私设置" is-link />
           <van-cell title="关于帮帮" is-link />
           <van-cell title="版本更新" is-link />
-          <van-cell title="退出登录" is-link @click="logout" />
+          <van-cell title="退出登录" is-link @click="logout" v-if="store.token" />
         </div>
       </main>
     </div>
@@ -73,11 +84,27 @@
 <script setup lang="ts">
 import FooterNav from '@/components/nav/FooterNav.vue'
 import router from '@/router'
+import { useStore } from '@/stores'
 const login = () => {
   router.push({ name: 'login' })
 }
 
-const logout = () => {}
+const store = useStore()
+const logout = async () => {
+  store.token = ''
+  store.userInfo = {
+    balance: 0,
+    createTime: '',
+    encrPassword: '',
+    gender: 0,
+    id: 0,
+    operaTime: '',
+    phone: '',
+    schoolId: 0,
+    userName: ''
+  }
+  router.go(0)
+}
 </script>
 
 <style scoped lang="scss">

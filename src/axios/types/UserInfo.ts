@@ -1,7 +1,7 @@
 interface UserInfo {
   id: number
   phone: string
-  username: string
+  userName: string
   password?: any
   encrPassword: string
   createTime: string
