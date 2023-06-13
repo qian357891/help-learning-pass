@@ -9,6 +9,7 @@ interface TaskList {
   createTime: string
   expirationTime: string
   validSeconds: number
+  imageUrls: string[]
 }
 
 interface TaskInfo {

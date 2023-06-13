@@ -55,12 +55,15 @@
               class="task-review"
               @click="toTaskInfo(item.id)"
             >
-              <div>
+              <div v-if="item.imageUrls.length == 0">
                 <img
                   src="../assets/img/task-page/default-img.png"
                   :alt="item.taskName"
                   class="img"
                 />
+              </div>
+              <div v-else>
+                <img :src="item.imageUrls[0]" fit="cover" alt="" class="img" />
               </div>
               <div class="task-review-content">
                 <!-- 任务标题 -->
@@ -73,7 +76,7 @@
                   </div>
                 </header>
                 <!--  -->
-                <span>内容 | {{ item.taskInfo }}</span>
+                <span class="van-multi-ellipsis--l2">内容 | {{ item.taskInfo }}</span>
                 <span v-if="item.validSeconds >= 3600"
                   >任务截止时间：{{ processingTime(item.expirationTime) }}</span
                 >
@@ -278,6 +281,7 @@ const processingTime = (originalTime: string) =>
 
 .img {
   width: 70px;
+  height: 70px;
   border-radius: 10px;
 }
 

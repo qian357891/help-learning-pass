@@ -1,3 +1,4 @@
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { axiosInstance } from '.'
 
 const axiosGet = (url: string) => {
@@ -27,4 +28,28 @@ const axiosDelete = (url: string) => {
   return axiosInstance({ method: 'delete', url })
 }
 
-export { axiosGet, axiosPost, axiosPatch, axiosDelete }
+async function axiosPostFormData<T>(
+  url: string,
+  formData: FormData,
+  config?: AxiosRequestConfig
+): Promise<T> {
+  const defaultConfig: AxiosRequestConfig = {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }
+
+  const mergedConfig: AxiosRequestConfig = {
+    ...defaultConfig,
+    ...config
+  }
+
+  try {
+    const response: AxiosResponse<T> = await axiosInstance.post(url, formData, mergedConfig)
+    return response.data
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message)
+  }
+}
+
+export { axiosGet, axiosPost, axiosPatch, axiosDelete, axiosPostFormData }

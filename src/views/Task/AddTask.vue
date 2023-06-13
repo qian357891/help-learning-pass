@@ -57,13 +57,7 @@
             <span>上传图片</span>
             <div class="img-submit" style="display: flex; flex-direction: column; align-items: end">
               <div>
-                <van-uploader
-                  result-type="file"
-                  v-model="fileList"
-                  multiple
-                  :max-count="3"
-                  :after-read="afterRead"
-                />
+                <van-uploader v-model="fileList" multiple :max-count="3" :after-read="afterRead" />
               </div>
               <div class="img-submit-prompt">
                 <div>仅支持jpg、jpeg、png格式</div>
@@ -120,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-import { axiosPost } from '@/axios/api'
+import { axiosPost, axiosPostFormData } from '@/axios/api'
 import { axiosConfig } from '@/axios/axios.config'
 import PopupPicker from '@/components/info/PopupPicker.vue'
 import TheInput from '@/components/info/TheInput.vue'
@@ -163,8 +157,8 @@ const cost = ref({
   getCost: '0',
   reward: '0'
 })
-
 // 详细数据
+const imageIds = ref([])
 const info = ref({
   categoryId: store.categoryChose,
   taskName: '',
@@ -176,6 +170,7 @@ const info = ref({
   taskInfo: '',
   taskPrice: 0,
   originalPrice: 0,
+  imageIds: imageIds.value,
   expirationTime: store.taskExpirationTime
 })
 
@@ -186,13 +181,28 @@ watch(cost.value, () => {
 
 watch(store, () => {
   info.value.expirationTime = store.taskExpirationTime
+  info.value.categoryId = store.categoryChose
+})
+watch(imageIds, () => {
+  info.value.imageIds = imageIds.value
 })
 
 const createTask = async () => {
-  const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.createTask, info.value)
-  console.log(data.data)
-  console.log(info.value)
-  router.push({ name: 'home' })
+  let formdata = new FormData()
+  _fileList_.value.forEach((element: File) => {
+    formdata.append('img', element)
+  })
+  const imgData: any = await axiosPostFormData(
+    axiosConfig.rootUrl + axiosConfig.uploadImg,
+    formdata
+  )
+  imageIds.value = imgData.urlIds
+
+  const data: any = await axiosPost(axiosConfig.rootUrl + axiosConfig.createTask, info.value)
+  console.log(data)
+  if (data.code == 200) {
+    router.push({ name: 'home' })
+  }
 }
 </script>
 

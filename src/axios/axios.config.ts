@@ -16,8 +16,9 @@ export const axiosConfig = {
   taskScreen: '/task/screen',
   createTask: '/task/create',
   getTaskInfo: '/task/taskInfo',
-  // 接单
+  // 订单
   acceptCreate: '/accept/create',
+  orderInfo: '/accept/orderInfo',
   // 搜索
   searchTask: '/task/search',
 
