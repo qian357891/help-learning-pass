@@ -2,6 +2,7 @@
 import { RouterView } from 'vue-router'
 import { axiosConfig } from './axios/axios.config'
 import { showDialog } from 'vant'
+import { useStore } from './stores'
 
 const socket = new WebSocket(axiosConfig.socketRoot + axiosConfig.socketUserId + '/1')
 // Connection opened
@@ -10,34 +11,36 @@ socket.addEventListener('open', function (event) {
 })
 
 // Listen for messages
+
 socket.addEventListener('message', function (event) {
   // console.log('Message from server ', event.data)
-  const data = event.data
-  let title
-  switch (data) {
+  // console.log(event.data)
+  const msgData = JSON.parse(event.data)
+  let message
+  switch (msgData.operate) {
     case 'finish':
-      title = data
+      message = '任务接收者已完成任务，请查收！'
       break
     case 'cancel':
-      title = data
+      message = '您的任务已被接收者取消！'
       break
     case 'accept':
-      title = data
-
+      message = '您的任务已被接收！'
       break
-    case '您的订单已完成':
-      title = data
+    case 'system':
+      message = '任务接收者完成任务已经超过两天，系统已经默认您已经确认您的任务已经完成！'
       break
     default:
       break
   }
   showDialog({
-    title,
-    message: '代码是写出来给人看的，附带能在机器上运行。',
+    title: '您有新的消息！',
+    message,
     theme: 'round-button'
-  }).then(() => {
-    // on close
   })
+  // .then(() => {
+  //   // on close
+  // })
 })
 </script>
 

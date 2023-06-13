@@ -16,46 +16,46 @@
               <img src="@/assets/img/task-page/default-img.png" alt="" />
             </div>
             <div>
-              <span>{{ taskInfo.userName }}</span>
+              <span>{{ taskInfo?.userName }}</span>
             </div>
           </div>
           <!-- 任务详细 -->
           <div>
-            <span>{{ taskInfo.taskName }}</span>
+            <span>{{ taskInfo?.taskName }}</span>
           </div>
           <div>
-            <span>{{ taskInfo.taskInfo }}</span>
+            <span>{{ taskInfo?.taskInfo }}</span>
           </div>
         </main>
 
         <div class="img">
-          <img src="/src/assets/img/task-page/default-img.png" :alt="taskInfo.taskName" />
+          <img src="/src/assets/img/task-page/default-img.png" :alt="taskInfo?.taskName" />
         </div>
       </div>
       <!-- 任务的属性 -->
       <div class="content-box task-info" style="margin-top: 10px">
         <div>
           <span>取货地点</span>
-          <span>{{ taskInfo.fromPlace }}</span>
+          <span>{{ taskInfo?.fromPlace }}</span>
         </div>
         <div>
           <span>收货地点</span>
-          <span>{{ taskInfo.toPlace }}</span>
+          <span>{{ taskInfo?.toPlace }}</span>
         </div>
         <div>
           <span>任务截止时间</span>
           <span style="color: rgba(8, 131, 217, 0.68)">{{
-            processingTime(taskInfo.expirationTime)
+            processingTime(taskInfo?.expirationTime as string)
           }}</span>
         </div>
         <van-divider />
         <div>
           <span>代取费用</span>
-          <span>{{ taskInfo.originalPrice }}</span>
+          <span>{{ taskInfo?.originalPrice }}</span>
         </div>
         <div>
           <span>任务赏金</span>
-          <span>{{ taskInfo.taskPrice }}</span>
+          <span>{{ taskInfo?.taskPrice }}</span>
         </div>
         <van-divider />
         <div style="text-align: center">
@@ -65,8 +65,8 @@
     </div>
     <footer>
       <TaskFooter
-        :get-cost="taskInfo.originalPrice"
-        :reward="taskInfo.taskPrice"
+        :get-cost="taskInfo?.originalPrice"
+        :reward="taskInfo?.taskPrice"
         :on-click="receiveTask"
         :button-text="'立即接收'"
       >
@@ -85,14 +85,20 @@ import TaskHeader from '@/components/task/TaskHeader.vue'
 import TaskFooter from '@/components/task/TaskFooter.vue'
 import { chooseList } from '@/util/category'
 import { useStore } from '@/stores'
+import { ref, type Ref } from 'vue'
 
 const store = useStore()
 const route = useRoute()
 const taskId = route.params.taskId
 
-const taskInfo: TaskInfo = (
-  await axiosGet(axiosConfig.rootUrl + axiosConfig.getTaskInfo + '?taskId=' + taskId)
-).data.taskInfo
+const taskInfo: Ref<TaskInfo | undefined> = ref()
+const getTaskInfo = async () => {
+  const data = await axiosGet(axiosConfig.rootUrl + axiosConfig.getTaskInfo + '?taskId=' + taskId)
+  taskInfo.value = data.data.taskDetail
+}
+
+getTaskInfo()
+console.log(taskInfo)
 
 const receiveTask = async () => {
   const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.acceptCreate, {
@@ -102,8 +108,8 @@ const receiveTask = async () => {
   console.log(data)
 }
 
-// const chose = chooseList.find((el) => el.id == taskInfo.categoryId)
-const chose = chooseList.find((el) => el.id == 1)
+const chose = chooseList.find((el) => el.id == taskInfo.value?.categoryId)
+// const chose = chooseList.find((el) => el.id == 1)
 
 // 处理截止时间字符串
 const processingTime = (originalTime: string) =>

@@ -85,7 +85,7 @@
                 />
               </div>
               <div>
-                <div>￥{{ item.taskPrice }}</div>
+                <div>￥{{ item.taskPrice + item.originalPrice }}</div>
               </div>
             </div>
           </div>

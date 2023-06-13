@@ -65,14 +65,14 @@ const getkeyHex = async () => {
 }
 
 const login = async () => {
-  if (reg_tel.test(phoneNumber.value)) {
-    store.phone = phoneNumber.value
-    // 存储用户数据
-    const userData = await axiosPost(axiosConfig.rootUrl + axiosConfig.getUserInfo, {})
-    store.userInfo = userData.data.userInfo
-  } else {
-    return
-  }
+  // if (reg_tel.test(phoneNumber.value)) {
+  store.phone = phoneNumber.value
+  //   // 存储用户数据
+  //   const userData = await axiosPost(axiosConfig.rootUrl + axiosConfig.getUserInfo, {})
+  //   store.userInfo = userData.data.userInfo
+  // } else {
+  //   return
+  // }
 
   //使用加密后的密码进行登录
   await getkeyHex()
@@ -83,6 +83,10 @@ const login = async () => {
   })
 
   store.token = await data.data.token
+  // 存储用户数据
+  const userData = await axiosPost(axiosConfig.rootUrl + axiosConfig.getUserInfo, {})
+  store.userInfo = userData.data.userInfo
+
   if (data.data.code == 500) {
     showFailToast('手机号或密码错误！')
   }
