@@ -98,7 +98,6 @@ import { chooseList } from '@/util/category'
 import { useStore } from '@/stores'
 import { ref, type Ref } from 'vue'
 import { showImagePreview } from 'vant'
-import router from '@/router'
 
 const store = useStore()
 const route = useRoute()
@@ -119,7 +118,6 @@ const receiveTask = async () => {
     userId: store.userInfo.id
   })
   console.log(data)
-  router.push({ name: 'OderInfo', params: { oderId: taskId } })
 }
 
 const chose = chooseList.find((el) => el.id == taskInfo.value?.categoryId)

@@ -24,6 +24,7 @@ export const useStore = defineStore(
 
     const activeNav = ref(0)
     const taskExpirationTime = ref('')
+    const taskUserId = ref(0)
 
     return {
       token,
@@ -32,7 +33,8 @@ export const useStore = defineStore(
       categoryChose,
       userInfo,
       activeNav,
-      taskExpirationTime
+      taskExpirationTime,
+      taskUserId
     }
   },
   {

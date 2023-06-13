@@ -2,15 +2,19 @@
 import { RouterView } from 'vue-router'
 import { axiosConfig } from './axios/axios.config'
 import { showDialog } from 'vant'
+import { useStore } from './stores'
+import router from './router'
 
-const socket = new WebSocket(axiosConfig.socketRoot + axiosConfig.socketUserId + '/2')
+const store = useStore()
+const socket = new WebSocket(
+  axiosConfig.socketRoot + axiosConfig.socketUserId + '/' + store.userInfo.id
+)
 // Connection opened
 socket.addEventListener('open', function (event) {
   socket.send('Hello Server!')
 })
 
 // Listen for messages
-
 socket.addEventListener('message', function (event) {
   // console.log('Message from server ', event.data)
   // console.log(event.data)
@@ -35,11 +39,11 @@ socket.addEventListener('message', function (event) {
   showDialog({
     title: '您有新的消息！',
     message,
-    theme: 'round-button'
+    theme: 'round-button',
+    confirmButtonColor: '#40a9ff'
+  }).then(() => {
+    router.go(0)
   })
-  // .then(() => {
-  //   // on close
-  // })
 })
 </script>
 

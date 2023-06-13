@@ -3,7 +3,7 @@
     <!-- 费用总和 -->
     <div style="height: 69px"></div>
     <footer>
-      <div>
+      <div v-if="noPrice != 1">
         <div style="display: flex; justify-content: end; align-items: center; margin-right: 10px">
           <span>合计</span>
           <span style="font-size: 20px">￥{{ +getCost + +reward }}</span>
@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <div>
+      <div style="position: absolute; right: 30px">
         <van-button round color="rgb(64, 169, 255)" @click="onClick" class="btn-text">{{
           buttonText
         }}</van-button>
@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps(['getCost', 'reward', 'onClick', 'buttonText'])
+defineProps(['getCost', 'reward', 'onClick', 'buttonText', 'noPrice'])
 </script>
 
 <style scoped lang="scss">
