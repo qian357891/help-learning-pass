@@ -4,11 +4,11 @@
     <div style="height: 69px"></div>
     <footer>
       <div>
-        <div>
+        <div style="display: flex; justify-content: end; align-items: center; margin-right: 10px">
           <span>合计</span>
-          <span>￥{{ +getCost + +reward }}</span>
+          <span style="font-size: 20px">￥{{ +getCost + +reward }}</span>
         </div>
-        <div style="transform: scale(0.9); transform-origin: left top">
+        <div style="transform: scale(0.9); transform-origin: right top; margin-right: 10px">
           <span>
             <slot />
           </span>

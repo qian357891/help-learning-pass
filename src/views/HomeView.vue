@@ -1,7 +1,11 @@
 <template>
   <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功">
-    <div class="wrap">
-      <img class="hero" src="../assets/img/index-img.png" alt="" />
+    <div class="wrap" style="min-height: 100vh">
+      <van-swipe :autoplay="3000" lazy-render>
+        <van-swipe-item v-for="image in images" :key="image">
+          <img class="hero" :src="image" />
+        </van-swipe-item>
+      </van-swipe>
       <div class="search">
         <van-search
           v-model="search"
@@ -180,6 +184,13 @@ const onSearch = async () => {
 // 处理截止时间字符串
 const processingTime = (originalTime: string) =>
   originalTime.slice(5, originalTime.length - 3).replace('-', '/')
+
+// 图片
+const images = [
+  '/src/assets/img/index-img.png',
+  '/src/assets/img/index-img.png',
+  '/src/assets/img/index-img.png'
+]
 </script>
 
 <style scoped lang="scss">

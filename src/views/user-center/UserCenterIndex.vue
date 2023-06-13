@@ -3,17 +3,16 @@
     <header>
       <div>
         <div v-if="store.token">
+          <VanImage width="80" height="80" fit="cover" round :src="store.userInfo.imageUrl" />
+        </div>
+        <div v-else @click="login">
           <VanImage
             width="80"
             height="80"
             fit="cover"
             round
-            :src="store.userInfo.imageUrl"
-            alt=""
+            src="@/assets/img/task-page/default-img.png"
           />
-        </div>
-        <div v-else @click="login">
-          <img src="@/assets/img/task-page/default-img.png" alt="" />
         </div>
         <div v-if="store.token" class="header-text">
           <span>{{ store.userInfo.userName }}</span>

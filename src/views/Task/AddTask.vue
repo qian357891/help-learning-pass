@@ -187,14 +187,15 @@ const createTask = async () => {
   _fileList_.value.forEach((element: File) => {
     formdata.append('img', element)
   })
-  const imgData: any = await axiosPostFormData(
-    axiosConfig.rootUrl + axiosConfig.uploadImg,
-    formdata
-  )
+
+  let imgData: any
+  if (_fileList_.value.length > 0) {
+    imgData = await axiosPostFormData(axiosConfig.rootUrl + axiosConfig.uploadImg, formdata)
+  }
 
   const data: any = await axiosPost(axiosConfig.rootUrl + axiosConfig.createTask, {
     ...info.value,
-    imageIds: imgData.urlIds
+    imageIds: imgData?.urlIds
   })
   console.log(data)
   if (data.data.code == 200) {

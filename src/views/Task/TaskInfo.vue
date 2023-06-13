@@ -79,8 +79,8 @@
         :on-click="receiveTask"
         :button-text="'立即接收'"
       >
-        <div>
-          <span> 接取任务超过3分钟后取消，会影响个人信誉，请谨慎接取任务 </span>
+        <div style="">
+          <span> 接取任务3分钟内取消，会影响个人信誉，请谨慎接取任务 </span>
         </div>
       </TaskFooter>
     </footer>
