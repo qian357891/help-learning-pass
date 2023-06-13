@@ -38,7 +38,7 @@
             <TheInput v-model:value="info.fromPlace" />
           </div>
 
-          <div>
+          <div v-if="[1, 2].includes(store.categoryChose)">
             <span>收货地点</span>
             <TheInput v-model:value="info.toPlace" />
           </div>
@@ -158,7 +158,6 @@ const cost = ref({
   reward: '0'
 })
 // 详细数据
-const imageIds = ref([])
 const info = ref({
   categoryId: store.categoryChose,
   taskName: '',
@@ -170,7 +169,6 @@ const info = ref({
   taskInfo: '',
   taskPrice: 0,
   originalPrice: 0,
-  imageIds: imageIds.value,
   expirationTime: store.taskExpirationTime
 })
 
@@ -183,9 +181,6 @@ watch(store, () => {
   info.value.expirationTime = store.taskExpirationTime
   info.value.categoryId = store.categoryChose
 })
-watch(imageIds, () => {
-  info.value.imageIds = imageIds.value
-})
 
 const createTask = async () => {
   let formdata = new FormData()
@@ -196,11 +191,13 @@ const createTask = async () => {
     axiosConfig.rootUrl + axiosConfig.uploadImg,
     formdata
   )
-  imageIds.value = imgData.urlIds
 
-  const data: any = await axiosPost(axiosConfig.rootUrl + axiosConfig.createTask, info.value)
+  const data: any = await axiosPost(axiosConfig.rootUrl + axiosConfig.createTask, {
+    ...info.value,
+    imageIds: imgData.urlIds
+  })
   console.log(data)
-  if (data.code == 200) {
+  if (data.data.code == 200) {
     router.push({ name: 'home' })
   }
 }

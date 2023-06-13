@@ -3,7 +3,14 @@
     <header>
       <div>
         <div v-if="store.token">
-          <img src="@/assets/img/task-page/default-img.png" alt="" />
+          <VanImage
+            width="80"
+            height="80"
+            fit="cover"
+            round
+            :src="store.userInfo.imageUrl"
+            alt=""
+          />
         </div>
         <div v-else @click="login">
           <img src="@/assets/img/task-page/default-img.png" alt="" />
@@ -162,10 +169,10 @@ header {
   }
 }
 
-img {
-  width: 80px;
-  border-radius: 100%;
-}
+// img {
+//   // width: 80px;
+//   border-radius: 100%;
+// }
 
 main {
   &:nth-child(2n + 1) {

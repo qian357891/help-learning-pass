@@ -25,7 +25,15 @@ export const useStore = defineStore(
     const activeNav = ref(0)
     const taskExpirationTime = ref('')
 
-    return { token, phone, navActive, categoryChose, userInfo, activeNav, taskExpirationTime }
+    return {
+      token,
+      phone,
+      navActive,
+      categoryChose,
+      userInfo,
+      activeNav,
+      taskExpirationTime
+    }
   },
   {
     persist: [

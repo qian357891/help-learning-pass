@@ -12,10 +12,7 @@
         <main class="post-main-content">
           <!-- 头 -->
           <div>
-            <div v-if="taskInfo?.headUrl != ''">
-              <VanImage fit="cover" width="50" height="50" :src="taskInfo?.headUrl" alt="" />
-            </div>
-            <div v-else>
+            <div>
               <img src="@/assets/img/task-page/default-img.png" alt="" />
             </div>
             <div>
@@ -60,11 +57,11 @@
         <van-divider />
         <div>
           <span>代取费用</span>
-          <span>{{ taskInfo?.originalPrice }}￥</span>
+          <span>{{ taskInfo?.originalPrice }}</span>
         </div>
         <div>
           <span>任务赏金</span>
-          <span>{{ taskInfo?.taskPrice }}￥</span>
+          <span>{{ taskInfo?.taskPrice }}</span>
         </div>
         <van-divider />
         <div style="text-align: center">
@@ -79,9 +76,7 @@
         :on-click="receiveTask"
         :button-text="'立即接收'"
       >
-        <div>
-          <span> 接取任务超过3分钟后取消，会影响个人信誉，请谨慎接取任务 </span>
-        </div>
+        接取任务超过3分钟后取消，会影响个人信誉，请谨慎接取任务
       </TaskFooter>
     </footer>
   </div>

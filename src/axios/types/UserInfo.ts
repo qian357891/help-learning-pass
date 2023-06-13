@@ -8,7 +8,7 @@ interface UserInfo {
   operaTime: string
   balance: number
   gender: number
-  imageUrls?: any
+  imageUrl?: any
   schoolId: number
 }
 

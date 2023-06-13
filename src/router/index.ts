@@ -8,6 +8,7 @@ import TaskInfo from '@/views/Task/TaskInfo.vue'
 import CommunityIndex from '@/views/community/CommunityIndex.vue'
 import PostInfo from '@/views/community/PostInfo.vue'
 import UserCenterIndex from '@/views/user-center/UserCenterIndex.vue'
+import OderInfo from '@/views/Task/OderInfo.vue'
 // import RegisterVue from '@/views/abandoned/Register.vue'
 
 const router = createRouter({
@@ -38,6 +39,7 @@ const router = createRouter({
       name: 'sms',
       component: Sms
     },
+    // 任务模块
     {
       path: '/add-task/:categoryId',
       name: 'addTask',
@@ -47,6 +49,11 @@ const router = createRouter({
       path: '/task-info/:taskId',
       name: 'taskInfo',
       component: TaskInfo
+    },
+    {
+      path: '/oder-info/:oderId',
+      name: 'OderInfo',
+      component: OderInfo
     },
     // 社区
     {

@@ -63,7 +63,7 @@
                 />
               </div>
               <div v-else>
-                <img :src="item.imageUrls[0]" fit="cover" alt="" class="img" />
+                <img :src="item.imageUrls[0]" fit="scale-down" alt="" class="img" />
               </div>
               <div class="task-review-content">
                 <!-- 任务标题 -->

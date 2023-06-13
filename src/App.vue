@@ -2,9 +2,8 @@
 import { RouterView } from 'vue-router'
 import { axiosConfig } from './axios/axios.config'
 import { showDialog } from 'vant'
-import { useStore } from './stores'
 
-const socket = new WebSocket(axiosConfig.socketRoot + axiosConfig.socketUserId + '/1')
+const socket = new WebSocket(axiosConfig.socketRoot + axiosConfig.socketUserId + '/2')
 // Connection opened
 socket.addEventListener('open', function (event) {
   socket.send('Hello Server!')

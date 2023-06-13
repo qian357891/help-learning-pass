@@ -8,7 +8,7 @@
           <span>合计</span>
           <span>￥{{ +getCost + +reward }}</span>
         </div>
-        <div>
+        <div style="transform: scale(0.9); transform-origin: left top">
           <span>
             <slot />
           </span>
@@ -16,7 +16,9 @@
       </div>
 
       <div>
-        <van-button round color="rgb(64, 169, 255)" @click="onClick">{{ buttonText }}</van-button>
+        <van-button round color="rgb(64, 169, 255)" @click="onClick" class="btn-text">{{
+          buttonText
+        }}</van-button>
       </div>
     </footer>
   </div>
@@ -32,7 +34,6 @@ footer {
   width: 430px;
   height: 69px;
   bottom: 0px;
-
   background: rgb(255, 255, 255);
   box-shadow: 0px -2px 4px rgba(211, 211, 211, 0.2);
 
@@ -45,5 +46,9 @@ footer {
     font-size: 10px;
     font-weight: 300;
   }
+}
+
+.btn-text {
+  font-size: 12px;
 }
 </style>
