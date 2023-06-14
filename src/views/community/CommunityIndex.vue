@@ -4,9 +4,9 @@
       <div class="main-box">
         <!-- 头部 -->
         <header>
-          <div><span>关注</span></div>
+          <div @click="chose"><span>点赞</span></div>
           <div class="chose"><span>推荐</span></div>
-          <div><span>热门</span></div>
+          <div><span>收藏</span></div>
         </header>
         <!-- 帖子 -->
         <div v-if="postPreInfoList.length === 0">
@@ -39,15 +39,15 @@
             <!-- 点赞，评论,关注 -->
             <div class="postStatus">
               <div>
-                <van-icon name="good-job-o" size="20" />
+                <van-icon name="good-job-o" size="20" @click="likeOrStar(0, postPreInfo.id)" />
                 <span>{{ postPreInfo.likeCount }}</span>
               </div>
               <div>
-                <van-icon name="chat-o" size="20" />
+                <van-icon name="chat-o" size="20" @click="toPostInfo(postPreInfo.id)" />
                 <span>{{ postPreInfo.commentCount }}</span>
               </div>
               <div>
-                <van-icon name="star-o" size="20" />
+                <van-icon name="star-o" size="20" @click="likeOrStar(1, postPreInfo.id)" />
                 <span>{{ postPreInfo.favoriteCount }}</span>
               </div>
             </div>
@@ -68,6 +68,7 @@ import FooterNav from '@/components/nav/FooterNav.vue'
 import { type PostPreInfo } from '@/axios/types/Post'
 import router from '@/router'
 import { ref, type Ref } from 'vue'
+import { likeOrStar } from '@/util/axiosUtilFn'
 
 const postPreInfoList: Ref<Array<PostPreInfo>> = ref([])
 
@@ -81,6 +82,8 @@ getPostList()
 const toPostInfo = (id: number) => {
   router.push({ name: 'postInfo', params: { communityId: id } })
 }
+
+const chose = () => {}
 </script>
 
 <style scoped lang="scss">

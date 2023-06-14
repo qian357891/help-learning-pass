@@ -28,11 +28,21 @@
         <!-- 点赞，评论,关注 -->
         <div class="postStatus">
           <div>
-            <van-icon name="good-job-o" size="20" style="font-weight: 700" />
+            <van-icon
+              name="good-job-o"
+              size="20"
+              style="font-weight: 700"
+              @click="likeOrStar(0, postInfo?.id as number)"
+            />
             <span>{{ postInfo?.likeCount }}</span>
           </div>
           <div>
-            <van-icon name="star-o" size="20" style="font-weight: 700" />
+            <van-icon
+              name="star-o"
+              size="20"
+              style="font-weight: 700"
+              @click="likeOrStar(1, postInfo?.id as number)"
+            />
             <span>{{ postInfo?.favoriteCount }}</span>
           </div>
         </div>
@@ -75,7 +85,7 @@
       <!-- 添加评论 -->
       <div style="height: 10px">
         <footer>
-          <CommentFooter />
+          <CommentFooter @keyup.enter="addComment" v-model:value="message" :postId="postInfo?.id" />
         </footer>
       </div>
     </div>
@@ -83,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { axiosGet } from '@/axios/api'
+import { axiosGet, axiosPost } from '@/axios/api'
 import { axiosConfig } from '@/axios/axios.config'
 import TaskHeader from '@/components/task/TaskHeader.vue'
 import type { Ref } from 'vue'
@@ -92,8 +102,12 @@ import { type PostingDetail } from '@/axios/types/Post'
 import { ref } from 'vue'
 import { processingTime } from '@/util/operateStr'
 import CommentFooter from '@/components/community/CommentFooter.vue'
+import { useStore } from '@/stores'
+import router from '@/router'
+import { likeOrStar } from '@/util/axiosUtilFn'
 
 const route = useRoute()
+const store = useStore()
 const communityId = route.params.communityId
 
 const postInfo: Ref<PostingDetail | undefined> = ref()
@@ -102,6 +116,17 @@ const getPostInfo = async () => {
     axiosConfig.rootUrl + axiosConfig.getPostingDetailById + '?communityId=' + communityId
   )
   postInfo.value = data.data.postingDetail
+}
+
+const message = ref('')
+const addComment = async () => {
+  const data = await axiosPost(axiosConfig.rootUrl + axiosConfig.addComment, {
+    communityId,
+    content: message.value,
+    parentId: 0,
+    userId: store.userInfo.id
+  })
+  router.go(0)
   // console.log(data)
 }
 getPostInfo()

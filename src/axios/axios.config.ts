@@ -25,6 +25,8 @@ export const axiosConfig = {
   //社区
   getPostList: '/community/list',
   getPostingDetailById: '/community/getPostingDetailById',
+  likeOrStar: '/favorite/like',
+  addComment: '/comment/posting',
 
   // socekt
   socketUserId: '/websocket',

@@ -5,22 +5,42 @@
     <footer>
       <div>
         <van-cell-group inset>
-          <van-field placeholder="请文明发言" />
+          <van-field
+            placeholder="请文明发言"
+            v-model="value"
+            @input="$emit('update:value', $event.target.value)"
+          />
         </van-cell-group>
       </div>
       <div class="post-status">
         <div>
-          <van-icon name="good-job-o" size="20" style="font-weight: 700" />
+          <van-icon
+            name="good-job-o"
+            size="20"
+            style="font-weight: 700"
+            @click="likeOrStar(0, postId)"
+          />
         </div>
         <div>
-          <van-icon name="star-o" size="20" style="font-weight: 700" />
+          <van-icon
+            name="star-o"
+            size="20"
+            style="font-weight: 700"
+            @click="likeOrStar(1, postId)"
+          />
         </div>
       </div>
     </footer>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { likeOrStar } from '@/util/axiosUtilFn'
+import { ref } from 'vue'
+
+defineProps(['postId'])
+const value = ref('')
+</script>
 
 <style scoped lang="scss">
 footer {
