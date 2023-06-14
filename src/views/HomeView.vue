@@ -20,80 +20,82 @@
         </van-search>
       </div>
 
-      <!-- 分类按钮 -->
-      <div class="classify">
-        <div class="classify-box">
-          <div
-            @click="toAddTask(item.id)"
-            v-for="item in chooseList.slice(1, chooseList.length)"
-            :key="item.id"
-          >
-            <!-- <img :src="item.img" :alt="item.name" /> -->
-            <img :src="getSvgUrl(item.img as string)" :alt="item.name" />
-            <span>{{ item.name }}</span>
+      <div style="transform: translate(0, -30px)">
+        <!-- 分类按钮 -->
+        <div class="classify">
+          <div class="classify-box">
+            <div
+              @click="toAddTask(item.id)"
+              v-for="item in chooseList.slice(1, chooseList.length)"
+              :key="item.id"
+            >
+              <!-- <img :src="item.img" :alt="item.name" /> -->
+              <img :src="getSvgUrl(item.img as string)" :alt="item.name" />
+              <span>{{ item.name }}</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- 任务列表 -->
-      <div class="list">
-        <div class="choose">
-          <span>任务中心</span>
-          <span
-            :class="{ chosed: store.categoryChose == item.id }"
-            v-for="item in chooseList"
-            :key="item.id"
-            @click="chooseCategory(item.id)"
-            >{{ item.name }}</span
-          >
-        </div>
-
-        <!-- 主内容 -->
-        <div v-if="chosedTaskList.length === 0">
-          <van-empty image="search" description="这里没有找到任何东西" />
-        </div>
-        <div v-else>
-          <div class="task-review-box" style="margin: 20px 0">
-            <div
-              v-for="item in chosedTaskList"
+        <!-- 任务列表 -->
+        <div class="list">
+          <div class="choose">
+            <span>任务中心</span>
+            <span
+              :class="{ chosed: store.categoryChose == item.id }"
+              v-for="item in chooseList"
               :key="item.id"
-              class="task-review"
-              @click="toTaskInfo(item.id)"
+              @click="chooseCategory(item.id)"
+              >{{ item.name }}</span
             >
-              <div v-if="item.imageUrls.length == 0">
-                <img
-                  src="../assets/img/task-page/default-img.png"
-                  :alt="item.taskName"
-                  class="img"
-                />
-              </div>
-              <div v-else>
-                <img :src="item.imageUrls[0]" fit="scale-down" alt="" class="img" />
-              </div>
-              <div class="task-review-content">
-                <!-- 任务标题 -->
-                <header class="task-review-title">
-                  <div :style="{ background: findByProp(item, 'color') }">
-                    <span> {{ findByProp(item, 'name') }} </span>
-                  </div>
-                  <div>
-                    <span>{{ item.taskName }}</span>
-                  </div>
-                </header>
-                <!--  -->
-                <span class="van-multi-ellipsis--l2">内容 | {{ item.taskInfo }}</span>
-                <span v-if="item.validSeconds >= 3600"
-                  >任务截止时间：{{ processingTime(item.expirationTime) }}</span
-                >
-                <van-count-down
-                  v-else
-                  millisecond
-                  :time="item.validSeconds * 1000"
-                  format="仅剩时间：mm:ss:SS"
-                />
-              </div>
-              <div>
-                <div>￥{{ item.taskPrice + item.originalPrice }}</div>
+          </div>
+
+          <!-- 主内容 -->
+          <div v-if="chosedTaskList.length === 0">
+            <van-empty image="search" description="这里没有找到任何东西" />
+          </div>
+          <div v-else>
+            <div class="task-review-box" style="margin: 20px 0">
+              <div
+                v-for="item in chosedTaskList"
+                :key="item.id"
+                class="task-review"
+                @click="toTaskInfo(item.id)"
+              >
+                <div v-if="item.imageUrls.length == 0">
+                  <img
+                    src="../assets/img/task-page/default-img.png"
+                    :alt="item.taskName"
+                    class="img"
+                  />
+                </div>
+                <div v-else>
+                  <img :src="item.imageUrls[0]" fit="scale-down" alt="" class="img" />
+                </div>
+                <div class="task-review-content">
+                  <!-- 任务标题 -->
+                  <header class="task-review-title">
+                    <div :style="{ background: findByProp(item, 'color') }">
+                      <span> {{ findByProp(item, 'name') }} </span>
+                    </div>
+                    <div>
+                      <span>{{ item.taskName }}</span>
+                    </div>
+                  </header>
+                  <!--  -->
+                  <span class="van-multi-ellipsis--l2">内容 | {{ item.taskInfo }}</span>
+                  <span v-if="item.validSeconds >= 3600"
+                    >任务截止时间：{{ processingTime(item.expirationTime) }}</span
+                  >
+                  <van-count-down
+                    v-else
+                    millisecond
+                    :time="item.validSeconds * 1000"
+                    format="仅剩时间：mm:ss:SS"
+                  />
+                </div>
+                <div>
+                  <div>￥{{ item.taskPrice + item.originalPrice }}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -200,8 +202,8 @@ const images = ['index-img', 'index-img', 'index-img']
   background: rgb(244, 245, 247);
 }
 .hero {
-  max-width: fit-content;
   width: 100vw;
+  max-height: 50vh;
 }
 .search {
   position: fixed;
@@ -223,12 +225,7 @@ const images = ['index-img', 'index-img', 'index-img']
 }
 // 分类
 .classify {
-  position: absolute;
-  width: 390px;
-  top: 180px;
-  left: 50%;
-  transform: translate(-50%);
-  box-sizing: border-box;
+  margin: 0 12px;
   background: rgb(255, 255, 255);
   box-shadow: 0px 4px 4px rgba(217, 217, 217, 0.25);
   border-radius: 10px;
@@ -236,29 +233,26 @@ const images = ['index-img', 'index-img', 'index-img']
 
 .classify-box {
   display: flex;
-  margin-top: 12px;
+  padding: 10px;
+  justify-content: space-around;
   div {
     width: 30px;
-    margin-left: 53px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  :first-child {
-    margin-left: 12px;
-  }
+
   span {
     font-family: Noto Sans;
     width: 24px;
     font-size: 10px;
     font-weight: 400;
     line-height: 22px;
-    margin-left: 12px;
   }
 }
 // 任务列表
 .list {
-  margin: 30px 12px 12px 12px;
+  margin: 12px 12px 12px 12px;
   background: rgb(255, 255, 255);
   border: 3px solid rgb(255, 255, 255);
   box-shadow: 0px 4px 4px rgba(217, 217, 217, 0.25);

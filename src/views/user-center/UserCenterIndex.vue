@@ -155,8 +155,8 @@ header {
 
 .postStatus {
   display: flex;
-  justify-content: space-between;
-  margin: 0 25px;
+  justify-content: space-around;
+  margin: 0 20px;
   & > div {
     display: flex;
     flex-direction: column;
@@ -167,11 +167,6 @@ header {
     }
   }
 }
-
-// img {
-//   // width: 80px;
-//   border-radius: 100%;
-// }
 
 main {
   &:nth-child(2n + 1) {

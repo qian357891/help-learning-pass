@@ -9,10 +9,12 @@
         </van-cell-group>
       </div>
       <div class="post-status">
-        <van-icon name="good-job-o" size="20" style="font-weight: 700" />
-      </div>
-      <div>
-        <van-icon name="star-o" size="20" style="font-weight: 700" />
+        <div>
+          <van-icon name="good-job-o" size="20" style="font-weight: 700" />
+        </div>
+        <div>
+          <van-icon name="star-o" size="20" style="font-weight: 700" />
+        </div>
       </div>
     </footer>
   </div>
@@ -23,20 +25,16 @@
 <style scoped lang="scss">
 footer {
   position: fixed;
-  width: 430px;
+  display: flex;
+  width: 100vw;
+  justify-content: space-between;
+  // width: 430px;
   height: 69px;
   bottom: 0px;
   background: rgb(255, 255, 255);
   box-shadow: 0px -2px 4px rgba(211, 211, 211, 0.2);
   display: flex;
   align-items: center;
-
-  & > div > div:last-child {
-    font-family: Noto Sans SC;
-    color: rgb(128, 128, 128);
-    font-size: 10px;
-    font-weight: 300;
-  }
 }
 
 :deep(.van-cell) {
@@ -45,6 +43,9 @@ footer {
 }
 
 .post-status {
-  margin: 0 20px 0 10px;
+  display: flex;
+  div {
+    margin-right: 20px;
+  }
 }
 </style>
