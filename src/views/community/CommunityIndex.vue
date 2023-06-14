@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="wrap">
+    <div class="wrap" style="min-height: 100vh">
       <div class="main-box">
         <!-- 头部 -->
         <header>
@@ -9,7 +9,11 @@
           <div><span>热门</span></div>
         </header>
         <!-- 帖子 -->
+        <div v-if="postPreInfoList.length === 0">
+          <van-empty image="search" description="这里没有找到任何东西" />
+        </div>
         <main
+          v-else
           class="content-box task-info"
           v-for="postPreInfo in postPreInfoList"
           :key="postPreInfo.id"
@@ -26,7 +30,7 @@
                 <span>{{ postPreInfo.title }}</span>
               </div>
               <div>
-                <span>{{ postPreInfo.content }}</span>
+                <span class="van-multi-ellipsis--l3">{{ postPreInfo.content }}</span>
               </div>
               <div v-if="postPreInfo.imagesUrls">
                 <img src="@/assets/img/task-page/default-img.png" class="img" alt="" />

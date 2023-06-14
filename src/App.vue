@@ -48,7 +48,7 @@ socket.addEventListener('message', function (event) {
 </script>
 
 <template>
-  <div class="">
+  <div class="" style="max-width: 800px">
     <Suspense>
       <RouterView />
     </Suspense>

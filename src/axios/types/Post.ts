@@ -29,6 +29,8 @@ interface PostingDetail {
 interface Comment {
   id: number
   userId: number
+  userName: string
+  headUrl?: any
   communityId: number
   content: string
   parentId: number

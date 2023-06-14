@@ -57,7 +57,7 @@
             processingTime(taskInfo?.expirationTime as string)
           }}</span>
         </div>
-        <van-divider />
+        <van-divider :hairline="false" />
         <div>
           <span>代取费用</span>
           <span>{{ taskInfo?.originalPrice }}￥</span>
@@ -66,18 +66,11 @@
           <span>任务赏金</span>
           <span>{{ taskInfo?.taskPrice }}￥</span>
         </div>
-        <van-divider />
+        <van-divider :hairline="false" />
       </div>
     </div>
     <footer>
-      <TaskFooter
-        :get-cost="taskInfo?.originalPrice"
-        :reward="taskInfo?.taskPrice"
-        :on-click="receiveTask"
-        :button-text="'确认完成'"
-        :noPrice="1"
-      >
-      </TaskFooter>
+      <CommentFooter />
     </footer>
   </div>
 </template>
@@ -88,12 +81,13 @@ import { axiosConfig } from '@/axios/axios.config'
 import { useRoute } from 'vue-router'
 import { type TaskInfo } from '@/axios/types/Task'
 import TaskHeader from '@/components/task/TaskHeader.vue'
-import TaskFooter from '@/components/task/TaskFooter.vue'
+
 import { chooseList } from '@/util/category'
 import { useStore } from '@/stores'
 import { ref, type Ref } from 'vue'
 import { showImagePreview } from 'vant'
 import { processingTime } from '@/util/operateStr'
+import type CommentFooter from '@/components/community/CommentFooter.vue'
 
 const store = useStore()
 const route = useRoute()

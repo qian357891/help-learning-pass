@@ -8,7 +8,8 @@
         <!-- 头 -->
         <div>
           <div>
-            <img src="@/assets/img/task-page/default-img.png" alt="" />
+            <!-- <img src="@/assets/img/task-page/default-img.png" alt="" /> -->
+            <VanImage :src="postInfo?.headerUrl" :alt="postInfo?.userName" />
           </div>
           <div>
             <span>{{ postInfo?.userName }}</span>
@@ -22,45 +23,60 @@
           <span>{{ postInfo?.content }}</span>
         </div>
       </main>
-      <van-divider />
+      <van-divider :hairline="false" />
       <div>
         <!-- 点赞，评论,关注 -->
         <div class="postStatus">
           <div>
-            <van-icon name="good-job-o" size="30" />
+            <van-icon name="good-job-o" size="20" style="font-weight: 700" />
             <span>{{ postInfo?.likeCount }}</span>
           </div>
           <div>
-            <van-icon name="star-o" size="30" />
+            <van-icon name="star-o" size="20" style="font-weight: 700" />
             <span>{{ postInfo?.favoriteCount }}</span>
           </div>
         </div>
       </div>
       <!-- 评论区 -->
       <div style="margin-top: 40px">
-        <div v-for="comment in postInfo?.comments" :key="comment.id" class="post-main-content">
-          <div>
-            <VanImage
-              width="50"
-              height="50"
-              src="/src/assets/img/task-page/default-img.png"
-              alt=""
-            />
-            <span>{{ comment.userId }}</span>
-          </div>
-          <div class="comment-content">
-            <span>{{ comment.content }}</span>
-          </div>
-          <div class="time">
-            <span>{{ processingTime(comment.createTime) }}</span>
-          </div>
-          <div class="comment-area">
-            <div v-for="childComment in comment.children" :key="childComment.id">
-              <span>{{ childComment.userId }}：{{ childComment.content }}</span>
+        <div class="post-main-content">
+          <template v-for="comment in postInfo?.comments" :key="comment.id">
+            <div class="comment-box" v-if="comment.parentId == 0">
+              <div>
+                <VanImage
+                  width="50"
+                  height="50"
+                  round
+                  :src="comment.headUrl"
+                  :alt="postInfo?.userName"
+                />
+              </div>
+              <div class="comment-main">
+                <div>
+                  <span>{{ comment.userName }}</span>
+                </div>
+                <div class="comment-content">
+                  <span>{{ comment.content }}</span>
+                </div>
+                <div class="time">
+                  <span>{{ processingTime(comment.createTime) }}</span>
+                </div>
+                <div class="comment-area">
+                  <div v-for="childComment in comment.children" :key="childComment.id">
+                    <span>{{ childComment.userName }}：{{ childComment.content }}</span>
+                  </div>
+                </div>
+                <van-divider :hairline="false" />
+              </div>
             </div>
-          </div>
-          <van-divider />
+          </template>
         </div>
+      </div>
+      <!-- 添加评论 -->
+      <div style="height: 10px">
+        <footer>
+          <CommentFooter />
+        </footer>
       </div>
     </div>
   </div>
@@ -75,6 +91,7 @@ import { useRoute } from 'vue-router'
 import { type PostingDetail } from '@/axios/types/Post'
 import { ref } from 'vue'
 import { processingTime } from '@/util/operateStr'
+import CommentFooter from '@/components/community/CommentFooter.vue'
 
 const route = useRoute()
 const communityId = route.params.communityId
@@ -95,6 +112,9 @@ getPostInfo()
   display: flex;
   justify-content: space-around;
   margin: 0 20px;
+  & > div > *:last-child {
+    margin-left: 5px;
+  }
 }
 .comment-content span {
   @include text('', 14px, 400);
@@ -112,8 +132,22 @@ getPostInfo()
     border-radius: 10px;
     margin-top: 10px;
   }
+
   span {
     @include text('', 14px, 400);
+  }
+}
+
+.comment-box {
+  display: flex;
+}
+.comment-main {
+  flex: 1;
+  & > div:first-of-type {
+    margin-top: 20px;
+  }
+  & > div:nth-of-type(n + 2) {
+    margin-top: 5px;
   }
 }
 </style>

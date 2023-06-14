@@ -90,7 +90,7 @@
           <!-- <div>
             <span>计费说明</span>
           </div> -->
-          <van-divider />
+          <van-divider :hairline="false" />
 
           <div>
             <span>小计￥{{ +cost.getCost + +cost.reward }}</span>

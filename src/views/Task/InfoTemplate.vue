@@ -57,7 +57,7 @@
             processingTime(taskInfo?.expirationTime as string)
           }}</span>
         </div>
-        <van-divider />
+        <van-divider :hairline="false" />
         <div>
           <span>代取费用</span>
           <span>{{ taskInfo?.originalPrice }}￥</span>
@@ -66,7 +66,7 @@
           <span>任务赏金</span>
           <span>{{ taskInfo?.taskPrice }}￥</span>
         </div>
-        <van-divider />
+        <van-divider :hairline="false" />
         <div style="text-align: center">
           <span>接取任务后可查看任务发布者联系方式</span>
         </div>
