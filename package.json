@@ -12,6 +12,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@vitejs/plugin-legacy": "^4.0.4",
     "axios": "^1.4.0",
     "crypto-js": "^4.1.1",
     "pinia": "^2.0.36",

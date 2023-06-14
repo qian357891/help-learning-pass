@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Login from '@/views/LoginAndRegister/Login.vue'
 import LoginByPassword from '@/views/LoginAndRegister/LoginByPassword.vue'
@@ -11,8 +11,10 @@ import UserCenterIndex from '@/views/user-center/UserCenterIndex.vue'
 import OderInfo from '@/views/Task/OderInfo.vue'
 // import RegisterVue from '@/views/abandoned/Register.vue'
 
+const hash = createWebHashHistory(import.meta.env.BASE_URL)
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  // history: createWebHistory(import.meta.env.BASE_URL),
+  history: hash,
   routes: [
     {
       path: '/',

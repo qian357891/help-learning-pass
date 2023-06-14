@@ -48,7 +48,7 @@ async function axiosPostFormData<T>(
     const response: AxiosResponse<T> = await axiosInstance.post(url, formData, mergedConfig)
     return response.data
   } catch (error) {
-    throw new Error(error.response?.data?.message || error.message)
+    throw new Error()
   }
 }
 

@@ -3,7 +3,7 @@
     <div class="wrap" style="min-height: 100vh">
       <van-swipe :autoplay="3000" lazy-render>
         <van-swipe-item v-for="image in images" :key="image">
-          <img class="hero" :src="image" />
+          <img class="hero" :src="getImgUrl(image)" />
         </van-swipe-item>
       </van-swipe>
       <div class="search">
@@ -28,7 +28,8 @@
             v-for="item in chooseList.slice(1, chooseList.length)"
             :key="item.id"
           >
-            <img :src="item.img" :alt="item.name" />
+            <!-- <img :src="item.img" :alt="item.name" /> -->
+            <img :src="getSvgUrl(item.img as string)" :alt="item.name" />
             <span>{{ item.name }}</span>
           </div>
         </div>
@@ -126,6 +127,14 @@ import FooterNav from '@/components/nav/FooterNav.vue'
 import { chooseList } from '@/util/category'
 import { processingTime } from '@/util/operateStr'
 
+//
+function getSvgUrl(name: string) {
+  return new URL(`../assets/icons/home-page/${name}.png.svg`, import.meta.url).href
+}
+function getImgUrl(name: string) {
+  return new URL(`../assets/img/${name}.png`, import.meta.url).href
+}
+//
 const store = useStore()
 store.categoryChose = 0
 const search = ref('')
@@ -182,16 +191,8 @@ const onSearch = async () => {
   chosedTaskList.value = data.data.data
   store.categoryChose = -1
 }
-// 处理截止时间字符串
-// const processingTime = (originalTime: string) =>
-//   originalTime.slice(5, originalTime.length - 3).replace('-', '/')
-
 // 图片
-const images = [
-  '/src/assets/img/index-img.png',
-  '/src/assets/img/index-img.png',
-  '/src/assets/img/index-img.png'
-]
+const images = ['index-img', 'index-img', 'index-img']
 </script>
 
 <style scoped lang="scss">
