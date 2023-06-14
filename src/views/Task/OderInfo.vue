@@ -70,7 +70,7 @@
       </div>
     </div>
     <footer>
-      <CommentFooter />
+      <TaskFooter :no-price="true" :button-text="'确认完成'" />
     </footer>
   </div>
 </template>
@@ -87,7 +87,7 @@ import { useStore } from '@/stores'
 import { ref, type Ref } from 'vue'
 import { showImagePreview } from 'vant'
 import { processingTime } from '@/util/operateStr'
-import type CommentFooter from '@/components/community/CommentFooter.vue'
+import TaskFooter from '@/components/task/TaskFooter.vue'
 
 const store = useStore()
 const route = useRoute()

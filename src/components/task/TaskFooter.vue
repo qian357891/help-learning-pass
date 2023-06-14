@@ -15,7 +15,11 @@
         </div>
       </div>
 
-      <div v-if="!noBth">
+      <div
+        v-if="!noBth"
+        style="display: flex; width: 100vw; justify-content: end"
+        :class="{ 'margin-r': noPrice }"
+      >
         <van-button round color="rgb(64, 169, 255)" @click="onClick" class="btn-text">{{
           buttonText
         }}</van-button>
@@ -29,6 +33,10 @@ defineProps(['getCost', 'reward', 'onClick', 'buttonText', 'noPrice', 'noBth'])
 </script>
 
 <style scoped lang="scss">
+.margin-r {
+  margin-right: 10px;
+}
+
 footer {
   position: fixed;
   // width: 430px;
